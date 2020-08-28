@@ -20,6 +20,9 @@ public class Main extends JavaPlugin {
 
         instance = this;
 
+        // files
+        initFiles();
+
         // registry
         handlerRegistry = new HandlerRegistry();
         handlerRegistry.loadHanders();
@@ -30,6 +33,10 @@ public class Main extends JavaPlugin {
     @Override
     public void onDisable() {
         handlerRegistry.unloadHandlers();
+    }
+
+    private void initFiles() {
+        saveResource("messages.yml", false);
     }
 
     public static Main getInstance() {

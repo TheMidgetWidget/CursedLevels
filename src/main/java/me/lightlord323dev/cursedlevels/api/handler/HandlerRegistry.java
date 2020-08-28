@@ -3,6 +3,7 @@ package me.lightlord323dev.cursedlevels.api.handler;
 import me.lightlord323dev.cursedlevels.Main;
 import me.lightlord323dev.cursedlevels.handler.CursedGUIHandler;
 import me.lightlord323dev.cursedlevels.handler.SkillGUIHandler;
+import me.lightlord323dev.cursedlevels.util.MessageUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 
@@ -19,13 +20,15 @@ public class HandlerRegistry {
 
     // handlers
     private SkillGUIHandler skillGUIHandler;
+    private MessageUtil messageUtil;
 
     public void loadHanders() {
         handlers = new ArrayList<>();
         // REGISTER HANDLERS
         handlers.addAll(Arrays.asList(
                 new CursedGUIHandler(),
-                skillGUIHandler = new SkillGUIHandler()
+                skillGUIHandler = new SkillGUIHandler(),
+                messageUtil = new MessageUtil()
         ));
         // call onLoad method
         handlers.forEach(handler -> {
@@ -42,5 +45,9 @@ public class HandlerRegistry {
 
     public SkillGUIHandler getSkillGUIHandler() {
         return skillGUIHandler;
+    }
+
+    public MessageUtil getMessageUtil() {
+        return messageUtil;
     }
 }

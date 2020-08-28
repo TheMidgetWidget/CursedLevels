@@ -1,5 +1,6 @@
 package me.lightlord323dev.cursedlevels.handler;
 
+import me.lightlord323dev.cursedlevels.Main;
 import me.lightlord323dev.cursedlevels.api.gui.skillgui.SkillGUI;
 import me.lightlord323dev.cursedlevels.api.handler.Handler;
 import me.lightlord323dev.cursedlevels.util.MessageUtil;
@@ -46,7 +47,7 @@ public class SkillGUIHandler implements Handler, Listener {
             SkillGUI skillGUI = getActiveSkillGUI(player);
             Inventory inv = skillGUI.getInventory(translation);
             if (inv == null) {
-                MessageUtil.error(player, "You cannot scroll any further");
+                MessageUtil.error(player, Main.getInstance().getHandlerRegistry().getMessageUtil().getMessage("skills-gui.scroll-error"));
             } else {
                 player.openInventory(inv);
                 cacheActiveSkillGUI(skillGUI); // cache again because it gets decached when inventory closes
