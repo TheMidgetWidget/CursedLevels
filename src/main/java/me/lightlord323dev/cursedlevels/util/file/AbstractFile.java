@@ -1,6 +1,6 @@
 package me.lightlord323dev.cursedlevels.util.file;
 
-import me.lightlord323dev.cursedvaults.Main;
+import me.lightlord323dev.cursedlevels.Main;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 

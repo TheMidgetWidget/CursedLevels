@@ -53,10 +53,12 @@ public class CursedGUI {
             for (int i = 0; i < 9; i++)
                 inventory.setItem(i, filler);
         }
-        items.forEach(guiItem -> {
-            if (guiItem.getIndex() < size)
-                inventory.setItem(guiItem.getIndex(), guiItem.getItemStack());
-        });
+        if (items != null) {
+            items.forEach(guiItem -> {
+                if (guiItem.getIndex() < size)
+                    inventory.setItem(guiItem.getIndex(), guiItem.getItemStack());
+            });
+        }
         return inventory;
     }
 
