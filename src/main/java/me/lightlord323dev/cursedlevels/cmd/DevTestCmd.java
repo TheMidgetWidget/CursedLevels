@@ -12,7 +12,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -31,15 +30,15 @@ public class DevTestCmd implements CommandExecutor {
 
             List<GUIItem> list = new ArrayList<>();
 
-            for (int i = 1; i < 40;  i++) {
-                list.add(new GUIItem(new ItemBuilder(new ItemStack(Material.STAINED_GLASS_PANE, 1, (short)4)).setDisplayName(i + "").build(), 0));
+            for (int i = 1; i < 200; i++) {
+                list.add(new GUIItem(new ItemBuilder(new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 4)).setDisplayName(i + "").build(), 0));
             }
 
-            SkillGUI skillGUI = new SkillGUI(ChatColor.RED+"SKILL NAME", list);
+            SkillGUI skillGUI = new SkillGUI(((Player) sender), ChatColor.RED + "SKILL NAME", list);
             int translation = 0;
             if (args.length > 1)
                 translation = Integer.parseInt(args[1]);
-            ((Player)sender).openInventory(skillGUI.getInventory(translation));
+            ((Player) sender).openInventory(skillGUI.getInventory(translation));
         }
 
         return true;

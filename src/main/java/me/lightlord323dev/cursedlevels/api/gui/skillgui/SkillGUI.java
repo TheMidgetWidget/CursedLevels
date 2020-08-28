@@ -1,10 +1,12 @@
 package me.lightlord323dev.cursedlevels.api.gui.skillgui;
 
+import me.lightlord323dev.cursedlevels.Main;
 import me.lightlord323dev.cursedlevels.api.gui.CursedGUI;
 import me.lightlord323dev.cursedlevels.api.gui.GUIItem;
 import me.lightlord323dev.cursedlevels.util.ItemBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
 import java.util.Arrays;
@@ -15,10 +17,10 @@ import java.util.List;
  */
 public class SkillGUI extends CursedGUI {
 
-    private String title;
+    private String title, ownerUUID;
     private List<GUIItem> controls, items;
 
-    public SkillGUI(String title, List<GUIItem> items) {
+    public SkillGUI(Player owner, String title, List<GUIItem> items) {
         super(6, title, false, null, true);
         this.controls = Arrays.asList(
                 new GUIItem(new ItemBuilder(Material.SIGN).setDisplayName(ChatColor.GREEN + "UP").build(), 7),
@@ -26,6 +28,8 @@ public class SkillGUI extends CursedGUI {
         );
         this.items = items;
         this.title = title;
+        this.ownerUUID = owner.getUniqueId().toString();
+        Main.getInstance().getHandlerRegistry().getSkillGUIHandler().cacheActiveSkillGUI(this);
     }
 
     @Override
@@ -34,10 +38,15 @@ public class SkillGUI extends CursedGUI {
     }
 
     public Inventory getInventory(int translation) {
+
+        if (translation < 0)
+            return null;
+
         Inventory inventory = super.getInventory();
-        int index = 9, start = 0;
+        int index = (translation + 1) % 4 <= 2 ? 9 : 17, start = 0;
         boolean line = false, reverse = false;
 
+        // TRANSLATION HANDLING
         for (int i = 1; i <= translation; i++) {
             if (!line) {
                 start++;
@@ -50,9 +59,14 @@ public class SkillGUI extends CursedGUI {
             }
         }
 
-        if (reverse)
+        // TRANSLATION OUT OF BOUNDS
+        if (start >= this.items.size())
+            return null;
+
+        if (reverse && line)
             index = 17;
 
+        // ZIGZAG HANDLER
         for (int i = start; i < this.items.size(); i++) {
             if (index >= 54)
                 break;
@@ -79,7 +93,21 @@ public class SkillGUI extends CursedGUI {
                 }
             }
         }
+
+        // CONTROLS
+        this.controls.get(0).addIntegerValue("clScroll", (translation - 1));
+        this.controls.get(1).addIntegerValue("clScroll", (translation + 1));
         this.controls.forEach(guiItem -> inventory.setItem(guiItem.getIndex(), guiItem.getItemStack()));
+
         return inventory;
+    }
+
+    @Override
+    public String getTitle() {
+        return title;
+    }
+
+    public String getOwnerUUID() {
+        return ownerUUID;
     }
 }

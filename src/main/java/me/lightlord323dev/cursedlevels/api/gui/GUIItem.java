@@ -16,6 +16,16 @@ public class GUIItem {
         this.index = index;
     }
 
+    public GUIItem addIntegerValue(String key, int val) {
+        this.itemStack = new NBTApi(itemStack).setInt(key, val).getItemStack();
+        return this;
+    }
+
+    public GUIItem addStringValue(String key, String val) {
+        this.itemStack = new NBTApi(itemStack).setString(key, val).getItemStack();
+        return this;
+    }
+
     public ItemStack getItemStack() {
         return itemStack.clone();
     }
