@@ -1,6 +1,7 @@
 package me.lightlord323dev.cursedlevels.api.handler;
 
 import me.lightlord323dev.cursedlevels.Main;
+import me.lightlord323dev.cursedlevels.api.skill.data.handler.SkillDataHandler;
 import me.lightlord323dev.cursedlevels.handler.CursedGUIHandler;
 import me.lightlord323dev.cursedlevels.handler.SkillGUIHandler;
 import me.lightlord323dev.cursedlevels.util.MessageUtil;
@@ -21,6 +22,7 @@ public class HandlerRegistry {
     // handlers
     private SkillGUIHandler skillGUIHandler;
     private MessageUtil messageUtil;
+    private SkillDataHandler skillDataHandler;
 
     public void loadHanders() {
         handlers = new ArrayList<>();
@@ -28,7 +30,8 @@ public class HandlerRegistry {
         handlers.addAll(Arrays.asList(
                 new CursedGUIHandler(),
                 skillGUIHandler = new SkillGUIHandler(),
-                messageUtil = new MessageUtil()
+                messageUtil = new MessageUtil(),
+                skillDataHandler = new SkillDataHandler()
         ));
         // call onLoad method
         handlers.forEach(handler -> {
@@ -49,5 +52,9 @@ public class HandlerRegistry {
 
     public MessageUtil getMessageUtil() {
         return messageUtil;
+    }
+
+    public SkillDataHandler getSkillDataHandler() {
+        return skillDataHandler;
     }
 }

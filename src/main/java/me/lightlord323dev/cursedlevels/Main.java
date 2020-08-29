@@ -2,6 +2,7 @@ package me.lightlord323dev.cursedlevels;
 
 import me.lightlord323dev.cursedlevels.api.handler.HandlerRegistry;
 import me.lightlord323dev.cursedlevels.cmd.DevTestCmd;
+import org.bukkit.Material;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**

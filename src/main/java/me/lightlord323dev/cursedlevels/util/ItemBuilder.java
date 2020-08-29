@@ -20,6 +20,16 @@ public class ItemBuilder {
         this.itemStack = new ItemStack(material);
     }
 
+    public ItemBuilder(String str) {
+        Material material = Material.matchMaterial(str);
+        if (material == null) {
+            String[] data = str.split(":");
+            material = Material.matchMaterial(data[0]);
+            this.itemStack = new ItemStack(material, 1, Short.parseShort(data[1]));
+        }
+        this.itemStack = new ItemStack(material);
+    }
+
     public ItemBuilder setDisplayName(String displayName) {
         ItemMeta meta = this.itemStack.getItemMeta();
         meta.setDisplayName(displayName);
