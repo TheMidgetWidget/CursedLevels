@@ -3,7 +3,9 @@ package me.lightlord323dev.cursedlevels.api.handler;
 import me.lightlord323dev.cursedlevels.Main;
 import me.lightlord323dev.cursedlevels.api.skill.data.handler.SkillDataHandler;
 import me.lightlord323dev.cursedlevels.handler.CursedGUIHandler;
+import me.lightlord323dev.cursedlevels.handler.CursedUserHandler;
 import me.lightlord323dev.cursedlevels.handler.SkillGUIHandler;
+import me.lightlord323dev.cursedlevels.handler.SkillMainMenuHandler;
 import me.lightlord323dev.cursedlevels.util.MessageUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
@@ -23,6 +25,8 @@ public class HandlerRegistry {
     private SkillGUIHandler skillGUIHandler;
     private MessageUtil messageUtil;
     private SkillDataHandler skillDataHandler;
+    private CursedUserHandler cursedUserHandler;
+    private SkillMainMenuHandler skillMainMenuHandler;
 
     public void loadHanders() {
         handlers = new ArrayList<>();
@@ -31,7 +35,9 @@ public class HandlerRegistry {
                 new CursedGUIHandler(),
                 skillGUIHandler = new SkillGUIHandler(),
                 messageUtil = new MessageUtil(),
-                skillDataHandler = new SkillDataHandler()
+                skillDataHandler = new SkillDataHandler(),
+                cursedUserHandler = new CursedUserHandler(),
+                skillMainMenuHandler = new SkillMainMenuHandler()
         ));
         // call onLoad method
         handlers.forEach(handler -> {
@@ -56,5 +62,13 @@ public class HandlerRegistry {
 
     public SkillDataHandler getSkillDataHandler() {
         return skillDataHandler;
+    }
+
+    public CursedUserHandler getCursedUserHandler() {
+        return cursedUserHandler;
+    }
+
+    public SkillMainMenuHandler getSkillMainMenuHandler() {
+        return skillMainMenuHandler;
     }
 }

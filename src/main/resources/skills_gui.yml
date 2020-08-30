@@ -7,8 +7,10 @@ skills:
   mining:
     display-item:
       material: "DIAMOND_PICKAXE"
-      name: "&aMining"
+      name: "&aMining &6%level%&7/&6%levelCap%"
       lore: "&7Click to view mining skill tree"
+    level-cap: 30
+    gui-title: "&aMining"
     bonus:
       # this is a linear function -> increasedDamage = multiplier * level + damage
       damage-multiplier: 1
@@ -19,8 +21,10 @@ skills:
   combat:
     display-item:
       material: "DIAMOND_SWORD"
-      name: "&aCombat"
+      name: "&aCombat &6%level%&7/&6%levelCap%"
       lore: "&7Click to view combat skill tree"
+    level-cap: 30
+    gui-title: "&aCombat"
     bonus:
       # health increases by this amount every level
       health-increment: 20
@@ -31,8 +35,10 @@ skills:
   foraging:
     display-item:
       material: "DIAMOND_AXE"
-      name: "&aForaging"
+      name: "&aForaging &6%level%&7/&6%levelCap%"
       lore: "&7Click to view foraging skill tree"
+    level-cap: 30
+    gui-title: "&aForaging"
     bonus:
       # this is a flat multiplier
       speed-multiplier: 1.5
@@ -43,8 +49,10 @@ skills:
   fishing:
     display-item:
       material: "FISHING_ROD"
-      name: "&aFishing"
+      name: "&aFishing &6%level%&7/&6%levelCap%"
       lore: "&7Click to view fishing skill tree"
+    level-cap: 30
+    gui-title: "&aFishing"
     bonus:
       # percentage varies until 100
       better-item-base: 25
@@ -57,8 +65,10 @@ skills:
   farming:
     display-item:
       material: "DIAMOND_HOE"
-      name: "&aFarming"
+      name: "&aFarming &6%level%&7/&6%levelCap%"
       lore: "&7Click to view farming skill tree"
+    level-cap: 30
+    gui-title: "&aFarming"
     bonus:
       # amt of health regenerated
       regen-base: 1
@@ -71,17 +81,19 @@ skills:
   craftsmanship:
     display-item:
       material: "WORKBENCH"
-      name: "&aCraftsmanship"
+      name: "&aCraftsmanship &6%level%&7/&6%levelCap%"
       lore: "&7Click to view craftsmanship skill tree"
+    level-cap: 30
+    gui-title: "&aCraftsmanship"
     bonus:
       luck-increment: 2
-      # this is a linear function -> doubleDmgChance = multiplier * level + doubleDmgBase
-      double-crop-multiplier: 1
   blacksmithing:
     display-item:
       material: "OBSIDIAN"
-      name: "&aBlacksmithing"
+      name: "&aBlacksmithing &6%level%&7/&6%levelCap%"
       lore: "&7Click to view blacksmithing skill tree"
+    level-cap: 30
+    gui-title: "&aBlacksmithing"
     bonus:
       # amt of mana regenerated
       mana-regen-base: 1
@@ -90,18 +102,22 @@ skills:
   defense:
     display-item:
       material: "BEACON"
-      name: "&aDefense"
+      name: "&aDefense &6%level%&7/&6%levelCap%"
       lore: "&7Click to view defense skill tree"
+    level-cap: 30
+    gui-title: "&aDefense"
     bonus:
       # amt of dmg decreased
       defense-base: 1
-      # this is a linear function -> dmgDecreased = defenseBase - multiplier * level
+      # this is a linear function -> dmgDecreased = multiplier * level + defenseBase
       defense-multiplier: 1
   runecrafting:
     display-item:
       material: "EMERALD"
-      name: "&aRunecrafting"
+      name: "&aRunecrafting &6%level%&7/&6%levelCap%"
       lore: "&7Click to view runecrafting skill tree"
+    level-cap: 30
+    gui-title: "&aRunecrafting"
     bonus:
       # amt of wisdom
       wisdom-base: 1

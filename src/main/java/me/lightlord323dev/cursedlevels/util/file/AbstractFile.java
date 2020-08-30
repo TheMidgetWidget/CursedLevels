@@ -52,6 +52,24 @@ public class AbstractFile {
         if (yml)
             c = YamlConfiguration.loadConfiguration(f);
     }
+    public AbstractFile(Main main, String name, String path, boolean yml, boolean createNewFile) {
+        this.main = main;
+
+        File dir = new File(main.getDataFolder() + File.separator + path);
+        if (!dir.exists())
+            dir.mkdirs();
+
+        this.f = new File(main.getDataFolder() + File.separator + path, name);
+        if (!f.exists() && createNewFile) {
+            try {
+                f.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if (yml)
+            c = YamlConfiguration.loadConfiguration(f);
+    }
 
     public FileConfiguration getConfig() {
         return c;

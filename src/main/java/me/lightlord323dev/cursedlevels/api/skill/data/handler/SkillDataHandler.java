@@ -4,7 +4,7 @@ import me.lightlord323dev.cursedlevels.Main;
 import me.lightlord323dev.cursedlevels.api.handler.Handler;
 import me.lightlord323dev.cursedlevels.api.skill.Skill;
 import me.lightlord323dev.cursedlevels.api.skill.data.SkillData;
-import me.lightlord323dev.cursedlevels.api.skill.data.skills.MiningData;
+import me.lightlord323dev.cursedlevels.api.skill.data.skills.*;
 import me.lightlord323dev.cursedlevels.util.file.AbstractFile;
 
 import java.util.Arrays;
@@ -21,19 +21,28 @@ public class SkillDataHandler implements Handler {
 
     @Override
     public void onLoad() {
-        skillFile = new AbstractFile(Main.getInstance(), "skillgui.yml", true);
+        skillFile = new AbstractFile(Main.getInstance(), "skills_gui.yml", true);
         // ALL SKILLS MUST BE REGISTERED HERE
         skillData = Arrays.asList(
-                new MiningData()
+                new MiningData(),
+                new CombatData(),
+                new ForagingData(),
+                new FishingData(),
+                new FarmingData(),
+                new CraftsmanshipData(),
+                new BlacksmithingData(),
+                new DefenseData(),
+                new RunecraftingData()
         );
         skillData.forEach(SkillData::onLoad);
     }
 
     @Override
-    public void onUnload() {}
+    public void onUnload() {
+    }
 
     public SkillData getSkillData(Skill skill) {
-        return this.skillData.stream().filter(skillObject -> skillObject.getSkill().equals(skill)).findAny().orElse(null);
+        return this.skillData.stream().filter(skillObject -> skillObject.getSkill() == skill).findAny().orElse(null);
     }
 
     public AbstractFile getSkillFile() {

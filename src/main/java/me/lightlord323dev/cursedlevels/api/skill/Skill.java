@@ -13,7 +13,6 @@ public enum Skill {
     CRAFTSMANSHIP,
     BLACKSMITHING,
     DEFENSE,
-    RUNE_CRAFTING,
-    EXCAVATION
+    RUNECRAFTING,
 
 }

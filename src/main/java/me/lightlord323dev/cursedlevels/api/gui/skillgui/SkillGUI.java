@@ -3,7 +3,9 @@ package me.lightlord323dev.cursedlevels.api.gui.skillgui;
 import me.lightlord323dev.cursedlevels.Main;
 import me.lightlord323dev.cursedlevels.api.gui.CursedGUI;
 import me.lightlord323dev.cursedlevels.api.gui.GUIItem;
+import me.lightlord323dev.cursedlevels.api.skill.Skill;
 import me.lightlord323dev.cursedlevels.util.ItemBuilder;
+import me.lightlord323dev.cursedlevels.util.NBTApi;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -18,18 +20,21 @@ import java.util.List;
 public class SkillGUI extends CursedGUI {
 
     private String title, ownerUUID;
+    private Skill skill;
     private List<GUIItem> controls, items;
 
-    public SkillGUI(Player owner, String title, List<GUIItem> items) {
+    public SkillGUI(Player owner, Skill skill, String title, List<GUIItem> items) {
         super(6, title, false, null, true);
         this.controls = Arrays.asList(
                 new GUIItem(new ItemBuilder(Material.SIGN).setDisplayName(ChatColor.GREEN + "UP").build(), 7),
                 new GUIItem(new ItemBuilder(Material.SIGN).setDisplayName(ChatColor.RED + "DOWN").build(), 8)
         );
         this.items = items;
+        this.items.forEach(guiItem -> guiItem.setItemStack(new NBTApi(guiItem.getItemStack()).setInt("skillLevel", guiItem.getIndex()).getItemStack()));
         this.title = title;
         this.ownerUUID = owner.getUniqueId().toString();
         Main.getInstance().getHandlerRegistry().getSkillGUIHandler().cacheActiveSkillGUI(this);
+        this.skill = skill;
     }
 
     @Override
@@ -102,6 +107,10 @@ public class SkillGUI extends CursedGUI {
         return inventory;
     }
 
+    public GUIItem getSkillLevelItem(int level) {
+        return this.items.stream().filter(guiItem -> guiItem.getIndex() == level).findAny().orElse(null);
+    }
+
     @Override
     public String getTitle() {
         return title;
@@ -109,5 +118,9 @@ public class SkillGUI extends CursedGUI {
 
     public String getOwnerUUID() {
         return ownerUUID;
+    }
+
+    public Skill getSkill() {
+        return skill;
     }
 }

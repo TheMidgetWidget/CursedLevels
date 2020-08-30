@@ -1,6 +1,7 @@
 package me.lightlord323dev.cursedlevels.api.user;
 
 import me.lightlord323dev.cursedlevels.api.skill.CursedSkill;
+import me.lightlord323dev.cursedlevels.api.skill.Skill;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,32 @@ public class CursedUser {
     public CursedUser(UUID uniqueId) {
         this.uniqueId = uniqueId;
         this.skills = new ArrayList<>();
-        // TODO add all skills
+        for (Skill skill : Skill.values()) {
+            skills.add(new CursedSkill(skill));
+        }
+    }
+
+    /**
+     * adds 1 level to the current skill level
+     * @param skill
+     */
+    public void addLevel(Skill skill) {
+        CursedSkill cs = this.skills.stream().filter(cursedSkill -> cursedSkill.getSkill() == skill).findAny().orElse(null);
+        if (cs != null)
+            cs.setLevel(cs.getLevel() + 1);
+    }
+
+    /**
+     * gets specified skill level for user
+     *
+     * @param skill
+     * @return -1 if skill not found
+     */
+    public int getSkillLevel(Skill skill) {
+        CursedSkill cs = this.skills.stream().filter(cursedSkill -> cursedSkill.getSkill() == skill).findAny().orElse(null);
+        if (cs != null)
+            return cs.getLevel();
+        return -1;
     }
 
     public UUID getUniqueId() {

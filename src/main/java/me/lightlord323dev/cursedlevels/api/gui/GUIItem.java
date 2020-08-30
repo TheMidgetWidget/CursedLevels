@@ -26,6 +26,10 @@ public class GUIItem {
         return this;
     }
 
+    public void setItemStack(ItemStack itemStack) {
+        this.itemStack = itemStack;
+    }
+
     public ItemStack getItemStack() {
         return itemStack.clone();
     }

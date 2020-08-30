@@ -1,8 +1,10 @@
 package me.lightlord323dev.cursedlevels.handler;
 
 import me.lightlord323dev.cursedlevels.Main;
+import me.lightlord323dev.cursedlevels.api.gui.GUIItem;
 import me.lightlord323dev.cursedlevels.api.gui.skillgui.SkillGUI;
 import me.lightlord323dev.cursedlevels.api.handler.Handler;
+import me.lightlord323dev.cursedlevels.api.user.CursedUser;
 import me.lightlord323dev.cursedlevels.util.MessageUtil;
 import me.lightlord323dev.cursedlevels.util.NBTApi;
 import org.bukkit.Material;
@@ -13,6 +15,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,18 +42,38 @@ public class SkillGUIHandler implements Handler, Listener {
         if (!(e.getWhoClicked() instanceof Player) || e.getClickedInventory() == null || e.getCurrentItem() == null || e.getCurrentItem().getType() == Material.AIR)
             return;
 
+        Player player = (Player) e.getWhoClicked();
+        SkillGUI skillGUI = getActiveSkillGUI(player);
+
+        if (skillGUI != null)
+            e.setCancelled(true);
+
+
         NBTApi nbtApi = new NBTApi(e.getCurrentItem());
 
         if (nbtApi.hasKey("clScroll")) {
-            Player player = (Player) e.getWhoClicked();
             int translation = nbtApi.getInt("clScroll");
-            SkillGUI skillGUI = getActiveSkillGUI(player);
             Inventory inv = skillGUI.getInventory(translation);
             if (inv == null) {
                 MessageUtil.error(player, Main.getInstance().getHandlerRegistry().getMessageUtil().getMessage("skills-gui.scroll-error"));
             } else {
                 player.openInventory(inv);
                 cacheActiveSkillGUI(skillGUI); // cache again because it gets decached when inventory closes
+            }
+        }
+
+        if (nbtApi.hasKey("skillLevel")) {
+            CursedUser cursedUser = Main.getInstance().getHandlerRegistry().getCursedUserHandler().getCursedUser(player.getUniqueId());
+            int userLevel = cursedUser.getSkillLevel(skillGUI.getSkill()), clickedLevel = nbtApi.getInt("skillLevel");
+            if (clickedLevel - userLevel == 1) {
+                cursedUser.addLevel(skillGUI.getSkill());
+                GUIItem guiItem = skillGUI.getSkillLevelItem(clickedLevel);
+                ItemStack itemStack = guiItem.getItemStack(), acquired = Main.getInstance().getHandlerRegistry().getSkillMainMenuHandler().getAcquiredLevelItem();
+                itemStack.setType(acquired.getType());
+                itemStack.setDurability(acquired.getDurability());
+                guiItem.setItemStack(itemStack);
+                e.setCurrentItem(itemStack);
+                player.sendMessage(skillGUI.getSkill() + " level is now " + cursedUser.getSkillLevel(skillGUI.getSkill()));
             }
         }
     }

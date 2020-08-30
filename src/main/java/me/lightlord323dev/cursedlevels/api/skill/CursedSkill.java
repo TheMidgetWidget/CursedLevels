@@ -10,7 +10,7 @@ public class CursedSkill {
 
     public CursedSkill(Skill skill) {
         this.skill = skill;
-        this.level = 1;
+        this.level = 0;
     }
 
     public Skill getSkill() {

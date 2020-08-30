@@ -26,8 +26,8 @@ public class ItemBuilder {
             String[] data = str.split(":");
             material = Material.matchMaterial(data[0]);
             this.itemStack = new ItemStack(material, 1, Short.parseShort(data[1]));
-        }
-        this.itemStack = new ItemStack(material);
+        } else
+            this.itemStack = new ItemStack(material);
     }
 
     public ItemBuilder setDisplayName(String displayName) {
