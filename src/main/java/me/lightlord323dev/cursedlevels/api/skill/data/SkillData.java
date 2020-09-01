@@ -19,7 +19,7 @@ public abstract class SkillData {
     private ItemStack itemStack;
     private FileConfiguration config;
     private String rootPath, displayName, lore, guiTitle;
-    private int levelCap;
+    private int levelCap, levelUpBase, levelUpMultiplier;
 
     public SkillData(Skill skill) {
         this.skill = skill;
@@ -32,6 +32,8 @@ public abstract class SkillData {
         this.displayName = ChatColor.translateAlternateColorCodes('&', config.getString(rootPath + ".display-item.name"));
         this.lore = ChatColor.translateAlternateColorCodes('&', config.getString(rootPath + ".display-item.lore"));
         this.levelCap = config.getInt(rootPath + ".level-cap");
+        this.levelUpBase = config.getInt(rootPath + ".level-up.base");
+        this.levelUpMultiplier = config.getInt(rootPath + ".level-up.multiplier");
         this.guiTitle = ChatColor.translateAlternateColorCodes('&', config.getString(rootPath + ".gui-title"));
         loadData();
     }
@@ -40,6 +42,10 @@ public abstract class SkillData {
 
     protected double getBonusDouble(String path) {
         return getDouble("bonus." + path);
+    }
+
+    protected int getBonusInt(String path) {
+        return config.getInt(rootPath + ".bonus." + path);
     }
 
     protected List<String> getStringList(String path) {
@@ -58,7 +64,17 @@ public abstract class SkillData {
         return config.getString(rootPath + "." + path);
     }
 
+    public int getAmtNeededToLevelUp(int level) {
+        return getPositiveGradientAmt(levelUpBase, levelUpMultiplier, level);
+    }
+
     public double getPositiveGradientAmt(double base, double multiplier, int level) {
+        if (level == 0)
+            return 0;
+        return multiplier * (level - 1) + base;
+    }
+
+    public int getPositiveGradientAmt(int base, int multiplier, int level) {
         return multiplier * level + base;
     }
 

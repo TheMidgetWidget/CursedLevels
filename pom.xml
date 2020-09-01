@@ -16,6 +16,12 @@
             <type>jar</type>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.sk89q</groupId>
+            <artifactId>worldguard</artifactId>
+            <version>6.1</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
     <build>
         <finalName>CursedLevels</finalName>
@@ -52,6 +58,10 @@
         <repository>
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
+        </repository>
+        <repository>
+            <id>sk89q-repo</id>
+            <url>https://maven.enginehub.org/repo/</url>
         </repository>
     </repositories>
 </project>

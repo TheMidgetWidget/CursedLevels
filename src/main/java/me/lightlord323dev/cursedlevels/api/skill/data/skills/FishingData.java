@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by Luda on 8/30/2020.
@@ -34,5 +35,9 @@ public class FishingData extends SkillData {
 
     public double getBetterItemChance(int level) {
         return getPositiveGradientAmt(betterItemBase, getBetterItemMultiplier, level);
+    }
+
+    public ItemStack getRandomItem() {
+        return itemPool.get(ThreadLocalRandom.current().nextInt(0, itemPool.size()));
     }
 }

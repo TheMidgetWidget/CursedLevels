@@ -9,6 +9,10 @@ skills:
       material: "DIAMOND_PICKAXE"
       name: "&aMining &6%level%&7/&6%levelCap%"
       lore: "&7Click to view mining skill tree"
+    level-up:
+      # linear function -> amtNeededToLevelup = multiplier * level + base
+      base: 200
+      multiplier: 200
     level-cap: 30
     gui-title: "&aMining"
     bonus:
@@ -23,9 +27,15 @@ skills:
       material: "DIAMOND_SWORD"
       name: "&aCombat &6%level%&7/&6%levelCap%"
       lore: "&7Click to view combat skill tree"
+    level-up:
+      # linear function -> amtNeededToLevelup = multiplier * level + base
+      base: 200
+      multiplier: 200
     level-cap: 30
     gui-title: "&aCombat"
     bonus:
+      entity-exp: 1
+      player-exp: 2
       # health increases by this amount every level
       health-increment: 20
       # percentage varies until 100
@@ -37,6 +47,10 @@ skills:
       material: "DIAMOND_AXE"
       name: "&aForaging &6%level%&7/&6%levelCap%"
       lore: "&7Click to view foraging skill tree"
+    level-up:
+      # linear function -> amtNeededToLevelup = multiplier * level + base
+      base: 200
+      multiplier: 200
     level-cap: 30
     gui-title: "&aForaging"
     bonus:
@@ -51,6 +65,10 @@ skills:
       material: "FISHING_ROD"
       name: "&aFishing &6%level%&7/&6%levelCap%"
       lore: "&7Click to view fishing skill tree"
+    level-up:
+      # linear function -> amtNeededToLevelup = multiplier * level + base
+      base: 200
+      multiplier: 200
     level-cap: 30
     gui-title: "&aFishing"
     bonus:
@@ -67,6 +85,10 @@ skills:
       material: "DIAMOND_HOE"
       name: "&aFarming &6%level%&7/&6%levelCap%"
       lore: "&7Click to view farming skill tree"
+    level-up:
+      # linear function -> amtNeededToLevelup = multiplier * level + base
+      base: 200
+      multiplier: 200
     level-cap: 30
     gui-title: "&aFarming"
     bonus:
@@ -83,6 +105,10 @@ skills:
       material: "WORKBENCH"
       name: "&aCraftsmanship &6%level%&7/&6%levelCap%"
       lore: "&7Click to view craftsmanship skill tree"
+    level-up:
+      # linear function -> amtNeededToLevelup = multiplier * level + base
+      base: 200
+      multiplier: 200
     level-cap: 30
     gui-title: "&aCraftsmanship"
     bonus:
@@ -92,6 +118,10 @@ skills:
       material: "OBSIDIAN"
       name: "&aBlacksmithing &6%level%&7/&6%levelCap%"
       lore: "&7Click to view blacksmithing skill tree"
+    level-up:
+      # linear function -> amtNeededToLevelup = multiplier * level + base
+      base: 200
+      multiplier: 200
     level-cap: 30
     gui-title: "&aBlacksmithing"
     bonus:
@@ -104,6 +134,10 @@ skills:
       material: "BEACON"
       name: "&aDefense &6%level%&7/&6%levelCap%"
       lore: "&7Click to view defense skill tree"
+    level-up:
+      # linear function -> amtNeededToLevelup = multiplier * level + base
+      base: 200
+      multiplier: 200
     level-cap: 30
     gui-title: "&aDefense"
     bonus:
@@ -116,6 +150,10 @@ skills:
       material: "EMERALD"
       name: "&aRunecrafting &6%level%&7/&6%levelCap%"
       lore: "&7Click to view runecrafting skill tree"
+    level-up:
+      # linear function -> amtNeededToLevelup = multiplier * level + base
+      base: 200
+      multiplier: 200
     level-cap: 30
     gui-title: "&aRunecrafting"
     bonus:

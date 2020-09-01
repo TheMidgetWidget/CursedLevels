@@ -2,10 +2,8 @@ package me.lightlord323dev.cursedlevels.api.handler;
 
 import me.lightlord323dev.cursedlevels.Main;
 import me.lightlord323dev.cursedlevels.api.skill.data.handler.SkillDataHandler;
-import me.lightlord323dev.cursedlevels.handler.CursedGUIHandler;
-import me.lightlord323dev.cursedlevels.handler.CursedUserHandler;
-import me.lightlord323dev.cursedlevels.handler.SkillGUIHandler;
-import me.lightlord323dev.cursedlevels.handler.SkillMainMenuHandler;
+import me.lightlord323dev.cursedlevels.handler.*;
+import me.lightlord323dev.cursedlevels.handler.skill.*;
 import me.lightlord323dev.cursedlevels.util.MessageUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
@@ -37,7 +35,17 @@ public class HandlerRegistry {
                 messageUtil = new MessageUtil(),
                 skillDataHandler = new SkillDataHandler(),
                 cursedUserHandler = new CursedUserHandler(),
-                skillMainMenuHandler = new SkillMainMenuHandler()
+                skillMainMenuHandler = new SkillMainMenuHandler(),
+                new CursedUserHealthHandler(),
+
+                // SKILL HANDLERS
+                new MiningHandler(),
+                new CombatHandler(),
+                new ForagingHandler(),
+                new FishingHandler(),
+                new FarmingHandler(),
+                new BlacksmithingHandler(),
+                new DefenseHandler()
         ));
         // call onLoad method
         handlers.forEach(handler -> {

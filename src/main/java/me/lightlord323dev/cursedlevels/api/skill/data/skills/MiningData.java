@@ -22,6 +22,8 @@ public class MiningData extends SkillData {
     }
 
     public double getAppliedDamage(double damage, int level) {
+        if (level == 0)
+            return damage;
         return getPositiveGradientAmt(damage, this.dmgMultiplier, level);
     }
 

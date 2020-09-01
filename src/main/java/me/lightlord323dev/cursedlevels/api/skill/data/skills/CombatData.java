@@ -8,7 +8,8 @@ import me.lightlord323dev.cursedlevels.api.skill.data.SkillData;
  */
 public class CombatData extends SkillData {
 
-    private double healthIncrement, doubleDamageBase, doubleDamageMultiplier;
+    private double doubleDamageBase, doubleDamageMultiplier;
+    private int healthIncrement, entityExp, playerExp;
 
     public CombatData() {
         super(Skill.COMBAT);
@@ -16,16 +17,26 @@ public class CombatData extends SkillData {
 
     @Override
     public void loadData() {
-        this.healthIncrement = getBonusDouble("health-increment");
+        this.healthIncrement = getBonusInt("health-increment");
         this.doubleDamageBase = getBonusDouble("double-damage-base");
         this.doubleDamageMultiplier = getBonusDouble("double-damage-multiplier");
+        this.entityExp = getBonusInt("entity-exp");
+        this.playerExp = getBonusInt("player-exp");
     }
 
-    public double getAddedHealth(int level) {
+    public int getAddedHealth(int level) {
         return level * healthIncrement;
     }
 
     public double getDoubleDamageChance(int level) {
         return getPositiveGradientAmt(doubleDamageBase, doubleDamageMultiplier, level) / 100;
+    }
+
+    public int getEntityExp() {
+        return entityExp;
+    }
+
+    public int getPlayerExp() {
+        return playerExp;
     }
 }

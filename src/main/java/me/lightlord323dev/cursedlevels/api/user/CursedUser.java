@@ -14,6 +14,11 @@ public class CursedUser {
 
     private UUID uniqueId;
     private List<CursedSkill> skills;
+    private long lastInCombat, lastSentLevelUp;
+    private int health, maxHealth;
+
+    // skill trackers
+    private int blocksMined, combatExp, foragingExp, fishingExp, farmingExp, blacksmithingExp, defenseExp;
 
     public CursedUser(UUID uniqueId) {
         this.uniqueId = uniqueId;
@@ -21,10 +26,23 @@ public class CursedUser {
         for (Skill skill : Skill.values()) {
             skills.add(new CursedSkill(skill));
         }
+        this.lastInCombat = 0;
+        this.lastSentLevelUp = 0;
+        this.health = 20;
+        this.maxHealth = 20;
+
+        this.blocksMined = 0;
+        this.combatExp = 0;
+        this.foragingExp = 0;
+        this.fishingExp = 0;
+        this.farmingExp = 0;
+        this.blacksmithingExp = 0;
+        this.defenseExp = 0;
     }
 
     /**
      * adds 1 level to the current skill level
+     *
      * @param skill
      */
     public void addLevel(Skill skill) {
@@ -48,5 +66,95 @@ public class CursedUser {
 
     public UUID getUniqueId() {
         return uniqueId;
+    }
+
+    public int getBlocksMined() {
+        return blocksMined;
+    }
+
+    public void setBlocksMined(int blocksMined) {
+        this.blocksMined = blocksMined;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public void setHealth(int health) {
+        if (health > maxHealth)
+            health = maxHealth;
+        this.health = health;
+    }
+
+    public int getCombatExp() {
+        return combatExp;
+    }
+
+    public void setCombatExp(int combatExp) {
+        this.combatExp = combatExp;
+    }
+
+    public int getMaxHealth() {
+        return maxHealth;
+    }
+
+    public void setMaxHealth(int maxHealth) {
+        this.maxHealth = maxHealth;
+    }
+
+    public int getForagingExp() {
+        return foragingExp;
+    }
+
+    public void setForagingExp(int foragingExp) {
+        this.foragingExp = foragingExp;
+    }
+
+    public int getFishingExp() {
+        return fishingExp;
+    }
+
+    public void setFishingExp(int fishingExp) {
+        this.fishingExp = fishingExp;
+    }
+
+    public int getFarmingExp() {
+        return farmingExp;
+    }
+
+    public void setFarmingExp(int farmingExp) {
+        this.farmingExp = farmingExp;
+    }
+
+    public int getBlacksmithingExp() {
+        return blacksmithingExp;
+    }
+
+    public void setBlacksmithingExp(int blacksmithingExp) {
+        this.blacksmithingExp = blacksmithingExp;
+    }
+
+    public int getDefenseExp() {
+        return defenseExp;
+    }
+
+    public void setDefenseExp(int defenseExp) {
+        this.defenseExp = defenseExp;
+    }
+
+    public long getLastInCombat() {
+        return lastInCombat;
+    }
+
+    public void setLastInCombat(long lastInCombat) {
+        this.lastInCombat = lastInCombat;
+    }
+
+    public long getLastSentLevelUp() {
+        return lastSentLevelUp;
+    }
+
+    public void setLastSentLevelUp(long lastSentLevelUp) {
+        this.lastSentLevelUp = lastSentLevelUp;
     }
 }

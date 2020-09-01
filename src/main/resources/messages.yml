@@ -2,3 +2,5 @@ main-menu-gui:
   title: "&6Your skills"
 skills-gui:
   scroll-error: "&cYou cannot scroll any further"
+skills:
+  level-up-message: "&aYou have levelled up %skill%!\nCurrent level: %level%"

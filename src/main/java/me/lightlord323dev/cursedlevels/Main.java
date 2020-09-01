@@ -1,5 +1,6 @@
 package me.lightlord323dev.cursedlevels;
 
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import me.lightlord323dev.cursedlevels.api.handler.HandlerRegistry;
 import me.lightlord323dev.cursedlevels.cmd.DevTestCmd;
 import me.lightlord323dev.cursedlevels.util.file.AbstractFile;
@@ -25,12 +26,18 @@ public class Main extends JavaPlugin {
     // settings file
     private AbstractFile settingsFile;
 
+    // worldguard
+    private WorldGuardPlugin worldGuardPlugin;
+
     @Override
     public void onEnable() {
-
         instance = this;
 
         this.executorService = Executors.newScheduledThreadPool(4);
+
+        // world guard
+        if (getServer().getPluginManager().getPlugin("WorldGuard") != null)
+            worldGuardPlugin = WorldGuardPlugin.inst();
 
         // files
         initFiles();
@@ -69,5 +76,9 @@ public class Main extends JavaPlugin {
 
     public AbstractFile getSettingsFile() {
         return settingsFile;
+    }
+
+    public WorldGuardPlugin getWorldGuardPlugin() {
+        return worldGuardPlugin;
     }
 }
