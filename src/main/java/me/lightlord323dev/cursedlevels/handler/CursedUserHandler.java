@@ -53,8 +53,10 @@ public class CursedUserHandler implements Handler, Listener {
         Main.getInstance().getExecutorService().schedule(() -> {
             AbstractFile abstractFile = new AbstractFile(Main.getInstance(), e.getPlayer().getUniqueId().toString() + ".json", "users", false);
             CursedUser cursedUser = getCursedUser(e.getPlayer().getUniqueId());
-            if (cursedUser != null)
+            if (cursedUser != null) {
                 GsonUtil.saveObject(cursedUser, abstractFile.getFile());
+                cursedUsers.remove(cursedUser);
+            }
         }, 0, TimeUnit.MILLISECONDS);
     }
 

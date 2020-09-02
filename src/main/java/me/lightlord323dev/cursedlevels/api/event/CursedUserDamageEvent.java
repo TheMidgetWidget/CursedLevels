@@ -11,7 +11,7 @@ import org.bukkit.event.HandlerList;
 public class CursedUserDamageEvent extends Event implements Cancellable {
 
     private static final HandlerList HANDLERS = new HandlerList();
-    private boolean isCancelled;
+    private boolean isCancelled, isDead;
     private CursedUser cursedUser;
     private int damage;
 
@@ -19,6 +19,7 @@ public class CursedUserDamageEvent extends Event implements Cancellable {
         this.isCancelled = false;
         this.cursedUser = cursedUser;
         this.damage = damage;
+        this.isDead = false;
     }
 
     public boolean isCancelled() {
@@ -47,5 +48,13 @@ public class CursedUserDamageEvent extends Event implements Cancellable {
 
     public void setDamage(int damage) {
         this.damage = damage;
+    }
+
+    public boolean isDead() {
+        return isDead;
+    }
+
+    public void setDead(boolean dead) {
+        isDead = dead;
     }
 }

@@ -13,8 +13,11 @@ import org.bukkit.event.Listener;
  */
 public class SkillHandler implements Handler, Listener {
 
+    private String expMsg;
+
     @Override
     public void onLoad() {
+        this.expMsg = Main.getInstance().getHandlerRegistry().getMessageUtil().getMessage("action-bar.gain-exp");
     }
 
     @Override
@@ -27,10 +30,23 @@ public class SkillHandler implements Handler, Listener {
             if (level >= skill.getLevelCap())
                 return;
             cursedUser.addLevel(skill.getSkill());
-            String msg = Main.getInstance().getHandlerRegistry().getMessageUtil().getMessage("skills.level-up-message").replace("%skill%", skill.getSkill().toString()).replace("%level%", (level + 1) + "");
+            String msg = Main.getInstance().getHandlerRegistry().getMessageUtil().getMessage("action-bar.level-up").replace("%skill%", skill.getSkill().toString()).replace("%level%", (level + 1) + "");
             cursedUser.setLastSentLevelUp(System.currentTimeMillis());
             CursedUserHealthHandler.sendActionBar(player, msg);
             checkLevelUp(player, cursedUser, currentExp, skill);
+        }
+    }
+
+    protected void sendExpNotification(Player player, CursedUser cursedUser, int exp, SkillData skill) {
+        if (System.currentTimeMillis() - cursedUser.getLastSentLevelUp() >= 3000) {
+            cursedUser.setLastSentExp(System.currentTimeMillis());
+            int level = cursedUser.getSkillLevel(skill.getSkill()), levelCap = skill.getLevelCap();
+            int nextExp;
+            if (level < levelCap)
+                nextExp = skill.getAmtNeededToLevelUp(level);
+            else
+                nextExp = skill.getAmtNeededToLevelUp(level - 1);
+            CursedUserHealthHandler.sendActionBar(player, expMsg.replace("%exp%", exp + "").replace("%skill%", skill.getSkill().toString()).replace("%currentExp%", cursedUser.getSkillExp(skill.getSkill()) + "").replace("%nextExp%", nextExp + ""));
         }
     }
 }

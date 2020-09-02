@@ -26,6 +26,7 @@ public class MiningHandler extends SkillHandler {
 
     @Override
     public void onLoad() {
+        super.onLoad();
         skillData = (MiningData) Main.getInstance().getHandlerRegistry().getSkillDataHandler().getSkillData(Skill.MINING);
     }
 
@@ -39,12 +40,14 @@ public class MiningHandler extends SkillHandler {
         }
 
         CursedUser cursedUser = Main.getInstance().getHandlerRegistry().getCursedUserHandler().getCursedUser(e.getPlayer().getUniqueId());
+        int exp = 1;
 
         // TRACKER UPDATE
-        cursedUser.setBlocksMined(cursedUser.getBlocksMined() + 1);
+        cursedUser.setSkillExp(skillData.getSkill(), cursedUser.getSkillExp(skillData.getSkill()) + exp);
+        sendExpNotification(e.getPlayer(), cursedUser, exp, skillData);
 
         // LEVELUP CHECK
-        checkLevelUp(e.getPlayer(), cursedUser, cursedUser.getBlocksMined(), skillData);
+        checkLevelUp(e.getPlayer(), cursedUser, cursedUser.getSkillExp(skillData.getSkill()), skillData);
 
         // MINING BONUS
         int level = cursedUser.getSkillLevel(skillData.getSkill());

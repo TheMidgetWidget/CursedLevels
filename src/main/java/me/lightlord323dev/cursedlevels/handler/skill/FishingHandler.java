@@ -19,6 +19,7 @@ public class FishingHandler extends SkillHandler {
 
     @Override
     public void onLoad() {
+        super.onLoad();
         skillData = (FishingData) Main.getInstance().getHandlerRegistry().getSkillDataHandler().getSkillData(Skill.FISHING);
     }
 
@@ -27,11 +28,14 @@ public class FishingHandler extends SkillHandler {
         if ((e.getState() == PlayerFishEvent.State.CAUGHT_ENTITY || e.getState() == PlayerFishEvent.State.CAUGHT_FISH) && e.getCaught() instanceof Item) {
             CursedUser cursedUser = Main.getInstance().getHandlerRegistry().getCursedUserHandler().getCursedUser(e.getPlayer().getUniqueId());
 
+            int exp = 1;
+
             // TRACKER UPDATE
-            cursedUser.setBlocksMined(cursedUser.getBlocksMined() + 1);
+            cursedUser.setSkillExp(skillData.getSkill(), cursedUser.getSkillExp(skillData.getSkill()) + exp);
+            sendExpNotification(e.getPlayer(), cursedUser, exp, skillData);
 
             // LEVELUP CHECK
-            checkLevelUp(e.getPlayer(), cursedUser, cursedUser.getFishingExp(), skillData);
+            checkLevelUp(e.getPlayer(), cursedUser, cursedUser.getSkillExp(skillData.getSkill()), skillData);
 
             // FISHING BONUS
             int level = cursedUser.getSkillLevel(skillData.getSkill());

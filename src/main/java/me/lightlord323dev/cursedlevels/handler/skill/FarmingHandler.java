@@ -23,6 +23,7 @@ public class FarmingHandler extends SkillHandler {
 
     @Override
     public void onLoad() {
+        super.onLoad();
         skillData = (FarmingData) Main.getInstance().getHandlerRegistry().getSkillDataHandler().getSkillData(Skill.FARMING);
     }
 
@@ -38,11 +39,14 @@ public class FarmingHandler extends SkillHandler {
         if ((e.getBlock().getType() == Material.CROPS || e.getBlock().getType() == Material.POTATO || e.getBlock().getType() == Material.CARROT || e.getBlock().getType() == Material.NETHER_WARTS) && e.getBlock().getData() == 7) {
             CursedUser cursedUser = Main.getInstance().getHandlerRegistry().getCursedUserHandler().getCursedUser(e.getPlayer().getUniqueId());
 
+            int exp = 1;
+
             // TRACKER UPDATE
-            cursedUser.setFarmingExp(cursedUser.getFarmingExp() + 1);
+            cursedUser.setSkillExp(skillData.getSkill(), cursedUser.getSkillExp(skillData.getSkill()) + exp);
+            sendExpNotification(e.getPlayer(), cursedUser, exp, skillData);
 
             // LEVELUP CHECK
-            checkLevelUp(e.getPlayer(), cursedUser, cursedUser.getFarmingExp(), skillData);
+            checkLevelUp(e.getPlayer(), cursedUser, cursedUser.getSkillExp(skillData.getSkill()), skillData);
 
 
             // FARMING BONUS

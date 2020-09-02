@@ -19,6 +19,7 @@ public class DefenseHandler extends SkillHandler {
 
     @Override
     public void onLoad() {
+        super.onLoad();
         skillData = (DefenseData) Main.getInstance().getHandlerRegistry().getSkillDataHandler().getSkillData(Skill.DEFENSE);
     }
 
@@ -28,11 +29,14 @@ public class DefenseHandler extends SkillHandler {
             Player player = (Player) e.getEntity();
             CursedUser cursedUser = Main.getInstance().getHandlerRegistry().getCursedUserHandler().getCursedUser(player.getUniqueId());
 
-            // UPDATE TRACKER
-            cursedUser.setDefenseExp(cursedUser.getDefenseExp() + (int) e.getDamage());
+            int exp = 1;
 
-            // CHECK LEVEL UP
-            checkLevelUp(player, cursedUser, cursedUser.getDefenseExp(), skillData);
+            // TRACKER UPDATE
+            cursedUser.setSkillExp(skillData.getSkill(), cursedUser.getSkillExp(skillData.getSkill()) + exp);
+            sendExpNotification(player, cursedUser, exp, skillData);
+
+            // LEVELUP CHECK
+            checkLevelUp(player, cursedUser, cursedUser.getSkillExp(skillData.getSkill()), skillData);
         }
     }
 

@@ -13,6 +13,7 @@ import org.bukkit.inventory.Inventory;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by Luda on 8/27/2020.
@@ -98,6 +99,8 @@ public class SkillGUI extends CursedGUI {
                 }
             }
         }
+
+//        Main.getInstance().getHandlerRegistry().getSkillDataHandler().getSkillData(skill).getItemStack(Main.getInstance().getHandlerRegistry().getCursedUserHandler().getCursedUser(UUID.fromString(ownerUUID)));
 
         // CONTROLS
         this.controls.get(0).addIntegerValue("clScroll", (translation - 1));

@@ -7,10 +7,12 @@ public class CursedSkill {
 
     private Skill skill;
     private int level;
+    private int exp;
 
     public CursedSkill(Skill skill) {
         this.skill = skill;
         this.level = 0;
+        this.exp = 0;
     }
 
     public Skill getSkill() {
@@ -23,5 +25,13 @@ public class CursedSkill {
 
     public void setLevel(int level) {
         this.level = level;
+    }
+
+    public int getExp() {
+        return exp;
+    }
+
+    public void setExp(int exp) {
+        this.exp = exp;
     }
 }

@@ -26,6 +26,6 @@ public class ForagingData extends SkillData {
     }
 
     public double getDoubleWoodChance(int level) {
-        return getPositiveGradientAmt(doubleWoodBase, doubleWoodMultiplier, level);
+        return getPositiveGradientAmt(doubleWoodBase, doubleWoodMultiplier, level) / 100;
     }
 }

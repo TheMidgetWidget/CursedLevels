@@ -2,6 +2,7 @@ package me.lightlord323dev.cursedlevels.api.skill.data;
 
 import me.lightlord323dev.cursedlevels.Main;
 import me.lightlord323dev.cursedlevels.api.skill.Skill;
+import me.lightlord323dev.cursedlevels.api.user.CursedUser;
 import me.lightlord323dev.cursedlevels.util.ItemBuilder;
 import me.lightlord323dev.cursedlevels.util.NBTApi;
 import org.bukkit.ChatColor;
@@ -82,8 +83,15 @@ public abstract class SkillData {
         return base - (multiplier * level);
     }
 
-    public ItemStack getItemStack(int level) {
-        ItemStack skillItem = new ItemBuilder(this.itemStack.clone()).setDisplayName(this.displayName.replace("%level%", level + "").replace("%levelCap%", levelCap + "")).setLore(lore.replace("%level%", level + "").replace("%levelCap%", levelCap + "")).build();
+    public ItemStack getItemStack(CursedUser cursedUser) {
+        int level = cursedUser.getSkillLevel(this.skill);
+        int currentExp = cursedUser.getSkillExp(skill);
+        int nextExp;
+        if (level < this.levelCap)
+            nextExp = getAmtNeededToLevelUp(level);
+        else
+            nextExp = getAmtNeededToLevelUp(level - 1);
+        ItemStack skillItem = new ItemBuilder(this.itemStack.clone()).setDisplayName(this.displayName.replace("%level%", level + "").replace("%levelCap%", levelCap + "")).setLore(lore.replace("%level%", level + "").replace("%levelCap%", levelCap + "").replace("%currentExp%", currentExp + "").replace("%nextExp%", nextExp + "")).build();
         skillItem = new NBTApi(skillItem).setString("skillItem", this.skill.toString()).getItemStack();
         return skillItem;
     }

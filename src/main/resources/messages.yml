@@ -4,3 +4,7 @@ skills-gui:
   scroll-error: "&cYou cannot scroll any further"
 skills:
   level-up-message: "&aYou have levelled up %skill%!\nCurrent level: %level%"
+action-bar:
+  main-hud: "&aHEALTH: &6%health%&7/&6%maxHealth%"
+  level-up: "&aYou have levelled up %skill% to %level%"
+  gain-exp: "&a+%exp% EXP %skill% %currentExp%/%nextExp%"

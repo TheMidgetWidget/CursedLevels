@@ -27,7 +27,7 @@ public class FarmingData extends SkillData {
     }
 
     public double getDoubleCropChance(int level) {
-        return getPositiveGradientAmt(doubleCropBase, doubleCropMultiplier, level);
+        return getPositiveGradientAmt(doubleCropBase, doubleCropMultiplier, level) / 100;
     }
 
     public double getRegenBase() {

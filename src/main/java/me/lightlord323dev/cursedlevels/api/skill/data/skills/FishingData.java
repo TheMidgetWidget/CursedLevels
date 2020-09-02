@@ -34,7 +34,7 @@ public class FishingData extends SkillData {
     }
 
     public double getBetterItemChance(int level) {
-        return getPositiveGradientAmt(betterItemBase, getBetterItemMultiplier, level);
+        return getPositiveGradientAmt(betterItemBase, getBetterItemMultiplier, level) / 100;
     }
 
     public ItemStack getRandomItem() {

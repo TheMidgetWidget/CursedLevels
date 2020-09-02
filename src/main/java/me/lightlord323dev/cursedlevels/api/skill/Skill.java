@@ -13,6 +13,12 @@ public enum Skill {
     CRAFTSMANSHIP,
     BLACKSMITHING,
     DEFENSE,
-    RUNECRAFTING,
+    RUNECRAFTING,;
 
+
+    @Override
+    public String toString() {
+        String str = super.toString();
+        return str.substring(0, 1) + str.substring(1).toLowerCase();
+    }
 }

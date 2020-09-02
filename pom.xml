@@ -22,6 +22,12 @@
             <version>6.1</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>me.brook.crafting</groupId>
+            <artifactId>EmberCore</artifactId>
+            <version>1.0</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
     <build>
         <finalName>CursedLevels</finalName>

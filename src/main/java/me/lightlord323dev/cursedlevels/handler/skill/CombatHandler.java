@@ -21,6 +21,7 @@ public class CombatHandler extends SkillHandler {
 
     @Override
     public void onLoad() {
+        super.onLoad();
         skillData = (CombatData) Main.getInstance().getHandlerRegistry().getSkillDataHandler().getSkillData(Skill.COMBAT);
     }
 
@@ -29,14 +30,19 @@ public class CombatHandler extends SkillHandler {
         if (e.getEntity().getKiller() != null) {
             CursedUser cursedUser = Main.getInstance().getHandlerRegistry().getCursedUserHandler().getCursedUser(e.getEntity().getKiller().getUniqueId());
 
+            int exp;
+
             // TRACKER UPDATE
             if (e.getEntity() instanceof Player)
-                cursedUser.setCombatExp(cursedUser.getCombatExp() + skillData.getPlayerExp());
+                exp = skillData.getPlayerExp();
             else
-                cursedUser.setCombatExp(cursedUser.getCombatExp() + skillData.getEntityExp());
+                exp = skillData.getEntityExp();
+
+            cursedUser.setSkillExp(skillData.getSkill(), cursedUser.getSkillExp(skillData.getSkill()) + exp);
 
             // LEVELUP CHECK
-            checkLevelUp(e.getEntity().getKiller(), cursedUser, cursedUser.getCombatExp(), skillData);
+            checkLevelUp(e.getEntity().getKiller(), cursedUser, cursedUser.getSkillExp(skillData.getSkill()), skillData);
+            sendExpNotification(e.getEntity().getKiller(), cursedUser, exp, skillData);
 
             // UPDATE HEALTH
             cursedUser.setMaxHealth(cursedUser.getMaxHealth() + skillData.getAddedHealth(cursedUser.getSkillLevel(skillData.getSkill())));

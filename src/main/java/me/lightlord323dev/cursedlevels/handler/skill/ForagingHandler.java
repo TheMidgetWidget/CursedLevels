@@ -23,6 +23,7 @@ public class ForagingHandler extends SkillHandler {
 
     @Override
     public void onLoad() {
+        super.onLoad();
         skillData = (ForagingData) Main.getInstance().getHandlerRegistry().getSkillDataHandler().getSkillData(Skill.FORAGING);
     }
 
@@ -38,11 +39,14 @@ public class ForagingHandler extends SkillHandler {
         if (e.getBlock().getType() == Material.LOG || e.getBlock().getType() == Material.LOG_2 || e.getBlock().getType() == Material.WOOD) {
             CursedUser cursedUser = Main.getInstance().getHandlerRegistry().getCursedUserHandler().getCursedUser(e.getPlayer().getUniqueId());
 
+            int exp = 1;
+
             // TRACKER UPDATE
-            cursedUser.setForagingExp(cursedUser.getForagingExp() + 1);
+            cursedUser.setSkillExp(skillData.getSkill(), cursedUser.getSkillExp(skillData.getSkill()) + exp);
+            sendExpNotification(e.getPlayer(), cursedUser, exp, skillData);
 
             // LEVELUP CHECK
-            checkLevelUp(e.getPlayer(), cursedUser, cursedUser.getForagingExp(), skillData);
+            checkLevelUp(e.getPlayer(), cursedUser, cursedUser.getSkillExp(skillData.getSkill()), skillData);
 
             // UPDATE BONUSES
             int level = cursedUser.getSkillLevel(skillData.getSkill());

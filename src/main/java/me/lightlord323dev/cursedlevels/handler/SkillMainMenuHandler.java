@@ -82,8 +82,7 @@ public class SkillMainMenuHandler implements Handler, Listener {
                 counter = 0;
             }
             SkillData skillData = Main.getInstance().getHandlerRegistry().getSkillDataHandler().getSkillData(skill);
-            int level = user.getSkillLevel(skill);
-            ItemStack itemStack = skillData.getItemStack(level);
+            ItemStack itemStack = skillData.getItemStack(user);
             guiItems.add(new GUIItem(itemStack, index));
             index++;
             counter++;

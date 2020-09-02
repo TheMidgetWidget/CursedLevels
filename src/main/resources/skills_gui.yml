@@ -8,7 +8,7 @@ skills:
     display-item:
       material: "DIAMOND_PICKAXE"
       name: "&aMining &6%level%&7/&6%levelCap%"
-      lore: "&7Click to view mining skill tree"
+      lore: "&7Click to view mining skill tree &6%currentExp%&7/&6%nextExp%"
     level-up:
       # linear function -> amtNeededToLevelup = multiplier * level + base
       base: 200
@@ -26,7 +26,7 @@ skills:
     display-item:
       material: "DIAMOND_SWORD"
       name: "&aCombat &6%level%&7/&6%levelCap%"
-      lore: "&7Click to view combat skill tree"
+      lore: "&7Click to view combat skill tree &6%currentExp%&7/&6%nextExp%"
     level-up:
       # linear function -> amtNeededToLevelup = multiplier * level + base
       base: 200
@@ -46,7 +46,7 @@ skills:
     display-item:
       material: "DIAMOND_AXE"
       name: "&aForaging &6%level%&7/&6%levelCap%"
-      lore: "&7Click to view foraging skill tree"
+      lore: "&7Click to view foraging skill tree &6%currentExp%&7/&6%nextExp%"
     level-up:
       # linear function -> amtNeededToLevelup = multiplier * level + base
       base: 200
@@ -64,7 +64,7 @@ skills:
     display-item:
       material: "FISHING_ROD"
       name: "&aFishing &6%level%&7/&6%levelCap%"
-      lore: "&7Click to view fishing skill tree"
+      lore: "&7Click to view fishing skill tree &6%currentExp%&7/&6%nextExp%"
     level-up:
       # linear function -> amtNeededToLevelup = multiplier * level + base
       base: 200
@@ -84,7 +84,7 @@ skills:
     display-item:
       material: "DIAMOND_HOE"
       name: "&aFarming &6%level%&7/&6%levelCap%"
-      lore: "&7Click to view farming skill tree"
+      lore: "&7Click to view farming skill tree &6%currentExp%&7/&6%nextExp%"
     level-up:
       # linear function -> amtNeededToLevelup = multiplier * level + base
       base: 200
@@ -104,7 +104,7 @@ skills:
     display-item:
       material: "WORKBENCH"
       name: "&aCraftsmanship &6%level%&7/&6%levelCap%"
-      lore: "&7Click to view craftsmanship skill tree"
+      lore: "&7Click to view craftsmanship skill tree &6%currentExp%&7/&6%nextExp%"
     level-up:
       # linear function -> amtNeededToLevelup = multiplier * level + base
       base: 200
@@ -117,7 +117,7 @@ skills:
     display-item:
       material: "OBSIDIAN"
       name: "&aBlacksmithing &6%level%&7/&6%levelCap%"
-      lore: "&7Click to view blacksmithing skill tree"
+      lore: "&7Click to view blacksmithing skill tree &6%currentExp%&7/&6%nextExp%"
     level-up:
       # linear function -> amtNeededToLevelup = multiplier * level + base
       base: 200
@@ -133,7 +133,7 @@ skills:
     display-item:
       material: "BEACON"
       name: "&aDefense &6%level%&7/&6%levelCap%"
-      lore: "&7Click to view defense skill tree"
+      lore: "&7Click to view defense skill tree &6%currentExp%&7/&6%nextExp%"
     level-up:
       # linear function -> amtNeededToLevelup = multiplier * level + base
       base: 200
@@ -149,7 +149,7 @@ skills:
     display-item:
       material: "EMERALD"
       name: "&aRunecrafting &6%level%&7/&6%levelCap%"
-      lore: "&7Click to view runecrafting skill tree"
+      lore: "&7Click to view runecrafting skill tree &6%currentExp%&7/&6%nextExp%"
     level-up:
       # linear function -> amtNeededToLevelup = multiplier * level + base
       base: 200
