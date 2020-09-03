@@ -1,2 +1,4 @@
 # in minutes
 auto-save-timer: 5
+level-up-sound: "LEVEL_UP"
+exp-gain-sound: "NOTE_PLING"

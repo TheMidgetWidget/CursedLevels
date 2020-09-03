@@ -2,7 +2,7 @@ package me.lightlord323dev.cursedlevels;
 
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import me.lightlord323dev.cursedlevels.api.handler.HandlerRegistry;
-import me.lightlord323dev.cursedlevels.cmd.DevTestCmd;
+import me.lightlord323dev.cursedlevels.cmd.SkillsCommand;
 import me.lightlord323dev.cursedlevels.util.file.AbstractFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -46,7 +46,7 @@ public class Main extends JavaPlugin {
         handlerRegistry = new HandlerRegistry();
         handlerRegistry.loadHanders();
 
-        getCommand("devtest").setExecutor(new DevTestCmd());
+        getCommand("skills").setExecutor(new SkillsCommand());
     }
 
     @Override
@@ -57,7 +57,7 @@ public class Main extends JavaPlugin {
     private void initFiles() {
         saveResource("messages.yml", false);
         saveResource("settings.yml", false);
-        saveResource("skills_gui.yml", false);
+        saveResource("skills_settings.yml", false);
 
         this.settingsFile = new AbstractFile(this, "settings.yml", true);
     }

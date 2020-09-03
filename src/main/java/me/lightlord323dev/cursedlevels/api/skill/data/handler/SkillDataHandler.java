@@ -5,6 +5,7 @@ import me.lightlord323dev.cursedlevels.api.handler.Handler;
 import me.lightlord323dev.cursedlevels.api.skill.Skill;
 import me.lightlord323dev.cursedlevels.api.skill.data.SkillData;
 import me.lightlord323dev.cursedlevels.api.skill.data.skills.*;
+import me.lightlord323dev.cursedlevels.api.skill.data.skills.mining.MiningData;
 import me.lightlord323dev.cursedlevels.util.file.AbstractFile;
 
 import java.util.Arrays;
@@ -21,7 +22,7 @@ public class SkillDataHandler implements Handler {
 
     @Override
     public void onLoad() {
-        skillFile = new AbstractFile(Main.getInstance(), "skills_gui.yml", true);
+        skillFile = new AbstractFile(Main.getInstance(), "skills_settings.yml", true);
         // ALL SKILLS MUST BE REGISTERED HERE
         skillData = Arrays.asList(
                 new MiningData(),

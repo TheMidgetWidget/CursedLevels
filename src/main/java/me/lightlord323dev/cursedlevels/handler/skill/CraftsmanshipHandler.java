@@ -1,9 +1,11 @@
 package me.lightlord323dev.cursedlevels.handler.skill;
 
+import me.brook.embercore.EmberPlugin;
 import me.lightlord323dev.cursedlevels.Main;
 import me.lightlord323dev.cursedlevels.api.skill.Skill;
 import me.lightlord323dev.cursedlevels.api.skill.data.skills.CraftsmanshipData;
 import me.lightlord323dev.cursedlevels.api.user.CursedUser;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.CraftItemEvent;
@@ -15,10 +17,14 @@ public class CraftsmanshipHandler extends SkillHandler {
 
     private CraftsmanshipData skillData;
 
+    private EmberPlugin emberPlugin;
+
     @Override
     public void onLoad() {
         super.onLoad();
         skillData = (CraftsmanshipData) Main.getInstance().getHandlerRegistry().getSkillDataHandler().getSkillData(Skill.CRAFTSMANSHIP);
+        if (Bukkit.getPluginManager().getPlugin("EmberCore") != null)
+            emberPlugin = (EmberPlugin) Bukkit.getPluginManager().getPlugin("EmberCore");
     }
 
     @EventHandler
@@ -39,7 +45,7 @@ public class CraftsmanshipHandler extends SkillHandler {
         checkLevelUp(player, cursedUser, cursedUser.getSkillExp(skillData.getSkill()), skillData);
 
         if (cursedUser.getSkillLevel(skillData.getSkill()) > level) {
-            // TODO increase luck
+            emberPlugin.getItemManager().setLuckLevels(player.getUniqueId(), emberPlugin.getItemManager().getLuckLevelOf(player) + (int) skillData.getLuckIncrement(cursedUser.getSkillLevel(skillData.getSkill())));
         }
     }
 

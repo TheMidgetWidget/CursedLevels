@@ -9,20 +9,15 @@ import org.bukkit.entity.Player;
 /**
  * Created by Luda on 8/28/2020.
  */
-public class DevTestCmd implements CommandExecutor {
+public class SkillsCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String s, String[] args) {
 
-        if (!sender.hasPermission("!cursedlevels.dev"))
+        if (!(sender instanceof Player))
             return true;
 
-
-        if (args[0].equalsIgnoreCase("skillsgui")) {
-
-            SkillMainMenuHandler.openMainMenu(((Player) sender));
-
-        }
+        SkillMainMenuHandler.openMainMenu(((Player) sender));
 
         return true;
     }

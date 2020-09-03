@@ -1,12 +1,15 @@
 package me.lightlord323dev.cursedlevels.handler.skill;
 
+import com.bgsoftware.superiorskyblock.api.SuperiorSkyblockAPI;
+import com.bgsoftware.superiorskyblock.api.island.Island;
 import com.sk89q.worldguard.bukkit.BukkitUtil;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
+import dev.mrshawn.oreregenerator.api.events.OreBreakEvent;
 import me.lightlord323dev.cursedlevels.Main;
 import me.lightlord323dev.cursedlevels.api.skill.Skill;
-import me.lightlord323dev.cursedlevels.api.skill.data.skills.MiningData;
+import me.lightlord323dev.cursedlevels.api.skill.data.skills.mining.MiningData;
 import me.lightlord323dev.cursedlevels.api.user.CursedUser;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -39,8 +42,18 @@ public class MiningHandler extends SkillHandler {
                 return;
         }
 
+        Island island = SuperiorSkyblockAPI.getIslandAt(e.getBlock().getLocation());
+        if (island != null) {
+            if (!island.isMember(SuperiorSkyblockAPI.getPlayer(e.getPlayer())))
+                return;
+        }
+
+        int exp = skillData.getBlockExp(e.getBlock().getType());
+
+        if (exp == -1)
+            return;
+
         CursedUser cursedUser = Main.getInstance().getHandlerRegistry().getCursedUserHandler().getCursedUser(e.getPlayer().getUniqueId());
-        int exp = 1;
 
         // TRACKER UPDATE
         cursedUser.setSkillExp(skillData.getSkill(), cursedUser.getSkillExp(skillData.getSkill()) + exp);
@@ -60,6 +73,30 @@ public class MiningHandler extends SkillHandler {
                     e.getPlayer().getWorld().dropItemNaturally(e.getBlock().getLocation(), itemStack);
                 });
                 e.getBlock().setType(Material.AIR);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onOreBreak(OreBreakEvent e) {
+        CursedUser cursedUser = Main.getInstance().getHandlerRegistry().getCursedUserHandler().getCursedUser(e.getWhoBroke().getUniqueId());
+        int exp = 1;
+
+        // TRACKER UPDATE
+        cursedUser.setSkillExp(skillData.getSkill(), cursedUser.getSkillExp(skillData.getSkill()) + exp);
+        sendExpNotification(e.getWhoBroke(), cursedUser, exp, skillData);
+
+        // LEVELUP CHECK
+        checkLevelUp(e.getWhoBroke(), cursedUser, cursedUser.getSkillExp(skillData.getSkill()), skillData);
+
+        // MINING BONUS
+        int level = cursedUser.getSkillLevel(skillData.getSkill());
+        if (level > 0 && e.getBrokenBlock().getType() == Material.GOLD_ORE || e.getBrokenBlock().getType() == Material.IRON_ORE) {
+            double chance = ThreadLocalRandom.current().nextInt(0, 401) / 400.0;
+            if (chance <= skillData.getDoubleOreChance(level)) {
+                e.getBrokenBlock().getDrops().forEach(itemStack -> {
+                    e.getBrokenBlock().getWorld().dropItemNaturally(e.getBrokenBlock().getLocation(), itemStack);
+                });
             }
         }
     }

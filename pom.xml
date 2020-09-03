@@ -23,7 +23,19 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>me.brook.crafting</groupId>
+            <groupId>com.bgsoftware.superiorskyblock.api</groupId>
+            <artifactId>SuperiorSkyblockAPI</artifactId>
+            <version>1.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>dev.mrshawn.oreregenerator</groupId>
+            <artifactId>OreRegenerator</artifactId>
+            <version>1.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>me.brook.embercore</groupId>
             <artifactId>EmberCore</artifactId>
             <version>1.0</version>
             <scope>provided</scope>

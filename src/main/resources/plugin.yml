@@ -2,4 +2,4 @@ name: CursedLevels
 main: me.lightlord323dev.cursedlevels.Main
 version: 1.0
 commands:
-  devtest:
+  skills:
