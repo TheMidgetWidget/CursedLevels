@@ -61,21 +61,6 @@ public class SkillGUIHandler implements Handler, Listener {
                 cacheActiveSkillGUI(skillGUI); // cache again because it gets decached when inventory closes
             }
         }
-
-        if (nbtApi.hasKey("skillLevel")) {
-            CursedUser cursedUser = Main.getInstance().getHandlerRegistry().getCursedUserHandler().getCursedUser(player.getUniqueId());
-            int userLevel = cursedUser.getSkillLevel(skillGUI.getSkill()), clickedLevel = nbtApi.getInt("skillLevel");
-            if (clickedLevel - userLevel == 1) {
-                cursedUser.addLevel(skillGUI.getSkill());
-                GUIItem guiItem = skillGUI.getSkillLevelItem(clickedLevel);
-                ItemStack itemStack = guiItem.getItemStack(), acquired = Main.getInstance().getHandlerRegistry().getSkillMainMenuHandler().getAcquiredLevelItem();
-                itemStack.setType(acquired.getType());
-                itemStack.setDurability(acquired.getDurability());
-                guiItem.setItemStack(itemStack);
-                e.setCurrentItem(itemStack);
-                player.sendMessage(skillGUI.getSkill() + " level is now " + cursedUser.getSkillLevel(skillGUI.getSkill()));
-            }
-        }
     }
 
     @EventHandler

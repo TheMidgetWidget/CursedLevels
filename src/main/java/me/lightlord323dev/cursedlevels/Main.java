@@ -4,6 +4,7 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import me.brook.embercore.EmberPlugin;
 import me.lightlord323dev.cursedlevels.api.handler.HandlerRegistry;
 import me.lightlord323dev.cursedlevels.api.user.CursedUser;
+import me.lightlord323dev.cursedlevels.cmd.LevelsCommand;
 import me.lightlord323dev.cursedlevels.cmd.SkillsCommand;
 import me.lightlord323dev.cursedlevels.placeholderapi.CursedLevelsExpansion;
 import me.lightlord323dev.cursedlevels.util.file.AbstractFile;
@@ -66,6 +67,7 @@ public class Main extends JavaPlugin {
         advancedEnchantmentsEffects();
 
         getCommand("skills").setExecutor(new SkillsCommand());
+        getCommand("levels").setExecutor(new LevelsCommand());
 
         // registering placeholders
         new CursedLevelsExpansion(this).register();

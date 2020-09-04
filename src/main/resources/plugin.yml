@@ -4,3 +4,4 @@ version: 1.0
 depend: [AdvancedEnchantments, OreRegenerator, WorldGuard, PlaceholderAPI]
 commands:
   skills:
+  levels:

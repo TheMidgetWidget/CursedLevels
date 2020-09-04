@@ -13,7 +13,6 @@ import org.bukkit.inventory.Inventory;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Created by Luda on 8/27/2020.
@@ -31,7 +30,7 @@ public class SkillGUI extends CursedGUI {
                 new GUIItem(new ItemBuilder(Material.SIGN).setDisplayName(ChatColor.RED + "DOWN").build(), 8)
         );
         this.items = items;
-        this.items.forEach(guiItem -> guiItem.setItemStack(new NBTApi(guiItem.getItemStack()).setInt("skillLevel", guiItem.getIndex()).getItemStack()));
+        this.items.forEach(guiItem -> guiItem.setItemStack(new NBTApi(guiItem.getItemStack()).getItemStack()));
         this.title = title;
         this.ownerUUID = owner.getUniqueId().toString();
         Main.getInstance().getHandlerRegistry().getSkillGUIHandler().cacheActiveSkillGUI(this);
