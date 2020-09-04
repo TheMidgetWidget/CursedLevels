@@ -39,6 +39,8 @@ public class MiningData extends SkillData {
     }
 
     public int getBlockExp(Material material) {
+        if (blocks.size() == 0)
+            return 1;
         MiningBlock block = this.blocks.stream().filter(miningBlock -> miningBlock.getMaterial() == material).findAny().orElse(null);
         return block == null ? -1 : block.getExp();
     }

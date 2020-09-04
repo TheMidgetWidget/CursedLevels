@@ -35,7 +35,7 @@ public class CursedUserHealthHandler implements Handler, Listener {
             Bukkit.getServer().getOnlinePlayers().forEach(player -> {
                 CursedUser cursedUser = Main.getInstance().getHandlerRegistry().getCursedUserHandler().getCursedUser(player.getUniqueId());
                 if (System.currentTimeMillis() - cursedUser.getLastInCombat() >= 5000) {
-                    int regenAmt = (int) farmingData.getRegenAmt(cursedUser.getSkillLevel(Skill.FARMING));
+                    int regenAmt = cursedUser.getRegen();
                     if (regenAmt == 0)
                         regenAmt = (int) farmingData.getRegenBase();
                     cursedUser.setHealth(cursedUser.getHealth() + regenAmt);

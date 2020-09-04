@@ -15,6 +15,7 @@ skills:
       multiplier: 200
     level-cap: 30
     gui-title: "&aMining"
+    # format is -> BLOCK;EXP
     blocks:
       - STONE;1
       - DIAMOND_ORE;4
@@ -37,9 +38,16 @@ skills:
       multiplier: 200
     level-cap: 30
     gui-title: "&aCombat"
+    entities:
+      - PLAYER;5
+      - ZOMBIE;2
+      - SHEEP;1
+      - SPIDER;3
+    bossmobs:
+      - ENTITY1;2
+      - ENTITY2;2
+      - ENTITY3;2
     bonus:
-      entity-exp: 1
-      player-exp: 2
       # health increases by this amount every level
       health-increment: 20
       # percentage varies until 100

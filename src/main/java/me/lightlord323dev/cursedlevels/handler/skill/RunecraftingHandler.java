@@ -34,8 +34,14 @@ public class RunecraftingHandler extends SkillHandler {
         cursedUser.setSkillExp(skillData.getSkill(), cursedUser.getSkillExp(skillData.getSkill()) + exp);
         sendExpNotification(player, cursedUser, exp, skillData);
 
+        int level = cursedUser.getSkillLevel(skillData.getSkill());
+
         // LEVELUP CHECK
         checkLevelUp(player, cursedUser, cursedUser.getSkillExp(skillData.getSkill()), skillData);
+
+        if (level < cursedUser.getSkillLevel(skillData.getSkill())) {
+            cursedUser.setMana(cursedUser.getMana() + (int) skillData.getWisdomAmt(cursedUser.getSkillLevel(skillData.getSkill())));
+        }
     }
 
 }

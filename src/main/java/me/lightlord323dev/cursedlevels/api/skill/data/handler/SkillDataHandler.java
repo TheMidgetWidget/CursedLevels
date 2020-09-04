@@ -5,6 +5,7 @@ import me.lightlord323dev.cursedlevels.api.handler.Handler;
 import me.lightlord323dev.cursedlevels.api.skill.Skill;
 import me.lightlord323dev.cursedlevels.api.skill.data.SkillData;
 import me.lightlord323dev.cursedlevels.api.skill.data.skills.*;
+import me.lightlord323dev.cursedlevels.api.skill.data.skills.combat.CombatData;
 import me.lightlord323dev.cursedlevels.api.skill.data.skills.mining.MiningData;
 import me.lightlord323dev.cursedlevels.util.file.AbstractFile;
 

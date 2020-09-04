@@ -17,6 +17,10 @@ public class CursedUser {
     private long lastInCombat, lastSentLevelUp, lastSentExp;
     private int health, maxHealth;
 
+    // gained effects
+    private int defense, mana, regen;
+    private double strength;
+
     public CursedUser(UUID uniqueId) {
         this.uniqueId = uniqueId;
         this.skills = new ArrayList<>();
@@ -28,6 +32,12 @@ public class CursedUser {
         this.lastSentExp = 0;
         this.health = 20;
         this.maxHealth = 20;
+
+        // gained effects
+        this.defense = 0;
+        this.mana = 0;
+        this.regen = 0;
+        this.strength = 1;
     }
 
     /**
@@ -111,5 +121,37 @@ public class CursedUser {
 
     public void setLastSentExp(long lastSentExp) {
         this.lastSentExp = lastSentExp;
+    }
+
+    public int getDefense() {
+        return defense;
+    }
+
+    public void setDefense(int defense) {
+        this.defense = defense;
+    }
+
+    public int getMana() {
+        return mana;
+    }
+
+    public void setMana(int mana) {
+        this.mana = mana;
+    }
+
+    public int getRegen() {
+        return regen;
+    }
+
+    public void setRegen(int regen) {
+        this.regen = regen;
+    }
+
+    public double getStrength() {
+        return strength;
+    }
+
+    public void setStrength(double strength) {
+        this.strength = strength;
     }
 }

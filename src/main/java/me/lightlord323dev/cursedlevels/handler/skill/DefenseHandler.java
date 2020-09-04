@@ -35,15 +35,21 @@ public class DefenseHandler extends SkillHandler {
             cursedUser.setSkillExp(skillData.getSkill(), cursedUser.getSkillExp(skillData.getSkill()) + exp);
             sendExpNotification(player, cursedUser, exp, skillData);
 
+            int level = cursedUser.getSkillLevel(skillData.getSkill());
+
             // LEVELUP CHECK
             checkLevelUp(player, cursedUser, cursedUser.getSkillExp(skillData.getSkill()), skillData);
+
+            if (level < cursedUser.getSkillLevel(skillData.getSkill())) {
+                cursedUser.setDefense(cursedUser.getDefense() + (int) skillData.getDefenseAmt(cursedUser.getSkillLevel(skillData.getSkill())));
+            }
         }
     }
 
     @EventHandler
     public void onCursedUserDmg(CursedUserDamageEvent e) {
         if (e.getCursedUser().getSkillLevel(skillData.getSkill()) > 0) {
-            int dmg = e.getDamage() - (int) skillData.getDefenseAmt(e.getCursedUser().getSkillLevel(skillData.getSkill()));
+            int dmg = e.getDamage() - e.getCursedUser().getDefense();
             if (dmg < 0)
                 dmg = 0;
             e.setDamage(dmg);

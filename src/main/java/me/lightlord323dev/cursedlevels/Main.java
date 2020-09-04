@@ -1,9 +1,18 @@
 package me.lightlord323dev.cursedlevels;
 
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import me.brook.embercore.EmberPlugin;
 import me.lightlord323dev.cursedlevels.api.handler.HandlerRegistry;
+import me.lightlord323dev.cursedlevels.api.user.CursedUser;
 import me.lightlord323dev.cursedlevels.cmd.SkillsCommand;
+import me.lightlord323dev.cursedlevels.placeholderapi.CursedLevelsExpansion;
 import me.lightlord323dev.cursedlevels.util.file.AbstractFile;
+import n3kas.ae.api.AEAPI;
+import n3kas.ae.api.AEnchantmentType;
+import n3kas.ae.api.CustomEffect;
+import n3kas.ae.api.EffectActivationEvent;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.concurrent.Executors;
@@ -29,6 +38,9 @@ public class Main extends JavaPlugin {
     // worldguard
     private WorldGuardPlugin worldGuardPlugin;
 
+    // embercore
+    private EmberPlugin emberPlugin;
+
     @Override
     public void onEnable() {
         instance = this;
@@ -39,6 +51,10 @@ public class Main extends JavaPlugin {
         if (getServer().getPluginManager().getPlugin("WorldGuard") != null)
             worldGuardPlugin = WorldGuardPlugin.inst();
 
+        // embercore
+        if (Bukkit.getPluginManager().getPlugin("EmberCore") != null)
+            emberPlugin = (EmberPlugin) Bukkit.getPluginManager().getPlugin("EmberCore");
+
         // files
         initFiles();
 
@@ -46,7 +62,13 @@ public class Main extends JavaPlugin {
         handlerRegistry = new HandlerRegistry();
         handlerRegistry.loadHanders();
 
+        // AE effects
+        advancedEnchantmentsEffects();
+
         getCommand("skills").setExecutor(new SkillsCommand());
+
+        // registering placeholders
+        new CursedLevelsExpansion(this).register();
     }
 
     @Override
@@ -60,6 +82,321 @@ public class Main extends JavaPlugin {
         saveResource("skills_settings.yml", false);
 
         this.settingsFile = new AbstractFile(this, "settings.yml", true);
+    }
+
+    private void advancedEnchantmentsEffects() {
+
+        // HEALTH EFFECTS
+        AEAPI.registerEffect(this, "INCREASE_HEALTH", new CustomEffect() {
+            @Override
+            public boolean onEffectActivation(EffectActivationEvent e) {
+                if (!e.getEnchantmentType().equals(AEnchantmentType.EFFECT_STATIC))
+                    return false;
+                if (e.getArgs().length == 0)
+                    return false;
+                if (!(e.getMainEntity() instanceof Player))
+                    return false;
+
+                int health = Integer.parseInt(e.getArgs()[0]);
+                CursedUser user = getHandlerRegistry().getCursedUserHandler().getCursedUser(e.getMainEntity().getUniqueId());
+
+                if (e.isRemoval()) {
+                    user.setMaxHealth(user.getMaxHealth() - health);
+                } else {
+                    user.setMaxHealth(user.getMaxHealth() + health);
+                }
+                return true;
+            }
+        });
+        AEAPI.registerEffect(this, "DECREASE_HEALTH", new CustomEffect() {
+            @Override
+            public boolean onEffectActivation(EffectActivationEvent e) {
+                if (!e.getEnchantmentType().equals(AEnchantmentType.EFFECT_STATIC))
+                    return false;
+                if (e.getArgs().length == 0)
+                    return false;
+                if (!(e.getMainEntity() instanceof Player))
+                    return false;
+
+                int health = Integer.parseInt(e.getArgs()[0]);
+                CursedUser user = getHandlerRegistry().getCursedUserHandler().getCursedUser(e.getMainEntity().getUniqueId());
+
+                if (e.isRemoval()) {
+                    user.setMaxHealth(user.getMaxHealth() + health);
+                } else {
+                    user.setMaxHealth(user.getMaxHealth() - health);
+                }
+                return true;
+            }
+        });
+
+        // DEFENSE EFFECTS
+        AEAPI.registerEffect(this, "INCREASE_DEFENSE", new CustomEffect() {
+            @Override
+            public boolean onEffectActivation(EffectActivationEvent e) {
+                if (!e.getEnchantmentType().equals(AEnchantmentType.EFFECT_STATIC))
+                    return false;
+                if (e.getArgs().length == 0)
+                    return false;
+                if (!(e.getMainEntity() instanceof Player))
+                    return false;
+
+                int defense = Integer.parseInt(e.getArgs()[0]);
+                CursedUser user = getHandlerRegistry().getCursedUserHandler().getCursedUser(e.getMainEntity().getUniqueId());
+
+                if (e.isRemoval()) {
+                    user.setDefense(user.getDefense() - defense);
+                } else {
+                    user.setDefense(user.getDefense() + defense);
+                }
+                return true;
+            }
+        });
+        AEAPI.registerEffect(this, "DECREASE_DEFENSE", new CustomEffect() {
+            @Override
+            public boolean onEffectActivation(EffectActivationEvent e) {
+                if (!e.getEnchantmentType().equals(AEnchantmentType.EFFECT_STATIC))
+                    return false;
+                if (e.getArgs().length == 0)
+                    return false;
+                if (!(e.getMainEntity() instanceof Player))
+                    return false;
+
+                int defense = Integer.parseInt(e.getArgs()[0]);
+                CursedUser user = getHandlerRegistry().getCursedUserHandler().getCursedUser(e.getMainEntity().getUniqueId());
+
+                if (e.isRemoval()) {
+                    user.setDefense(user.getDefense() + defense);
+                } else {
+                    user.setDefense(user.getDefense() - defense);
+                }
+                return true;
+            }
+        });
+
+        // MANA EFFECTS
+        AEAPI.registerEffect(this, "INCREASE_MANA", new CustomEffect() {
+            @Override
+            public boolean onEffectActivation(EffectActivationEvent e) {
+                if (!e.getEnchantmentType().equals(AEnchantmentType.EFFECT_STATIC))
+                    return false;
+                if (e.getArgs().length == 0)
+                    return false;
+                if (!(e.getMainEntity() instanceof Player))
+                    return false;
+
+                int mana = Integer.parseInt(e.getArgs()[0]);
+                CursedUser user = getHandlerRegistry().getCursedUserHandler().getCursedUser(e.getMainEntity().getUniqueId());
+
+                if (e.isRemoval()) {
+                    user.setMana(user.getMana() - mana);
+                } else {
+                    user.setMana(user.getMana() + mana);
+                }
+                return true;
+            }
+        });
+        AEAPI.registerEffect(this, "DECREASE_MANA", new CustomEffect() {
+            @Override
+            public boolean onEffectActivation(EffectActivationEvent e) {
+                if (!e.getEnchantmentType().equals(AEnchantmentType.EFFECT_STATIC))
+                    return false;
+                if (e.getArgs().length == 0)
+                    return false;
+                if (!(e.getMainEntity() instanceof Player))
+                    return false;
+
+                int mana = Integer.parseInt(e.getArgs()[0]);
+                CursedUser user = getHandlerRegistry().getCursedUserHandler().getCursedUser(e.getMainEntity().getUniqueId());
+
+                if (e.isRemoval()) {
+                    user.setMana(user.getMana() + mana);
+                } else {
+                    user.setMana(user.getMana() - mana);
+                }
+                return true;
+            }
+        });
+
+        // LUCK EFFECTS
+        AEAPI.registerEffect(this, "INCREASE_LUCK", new CustomEffect() {
+            @Override
+            public boolean onEffectActivation(EffectActivationEvent e) {
+                if (!e.getEnchantmentType().equals(AEnchantmentType.EFFECT_STATIC))
+                    return false;
+                if (e.getArgs().length == 0)
+                    return false;
+                if (!(e.getMainEntity() instanceof Player))
+                    return false;
+
+                Player player = (Player) e.getMainEntity();
+
+                int luck = Integer.parseInt(e.getArgs()[0]);
+
+                if (e.isRemoval()) {
+                    getEmberPlugin().getItemManager().setLuckLevels(player.getUniqueId(), getEmberPlugin().getItemManager().getLuckLevelOf(player) - luck);
+                } else {
+                    getEmberPlugin().getItemManager().setLuckLevels(player.getUniqueId(), getEmberPlugin().getItemManager().getLuckLevelOf(player) + luck);
+                }
+                return true;
+            }
+        });
+        AEAPI.registerEffect(this, "DECREASE_LUCK", new CustomEffect() {
+            @Override
+            public boolean onEffectActivation(EffectActivationEvent e) {
+                if (!e.getEnchantmentType().equals(AEnchantmentType.EFFECT_STATIC))
+                    return false;
+                if (e.getArgs().length == 0)
+                    return false;
+                if (!(e.getMainEntity() instanceof Player))
+                    return false;
+
+                Player player = (Player) e.getMainEntity();
+
+                int luck = Integer.parseInt(e.getArgs()[0]);
+
+                if (e.isRemoval()) {
+                    getEmberPlugin().getItemManager().setLuckLevels(player.getUniqueId(), getEmberPlugin().getItemManager().getLuckLevelOf(player) + luck);
+                } else {
+                    getEmberPlugin().getItemManager().setLuckLevels(player.getUniqueId(), getEmberPlugin().getItemManager().getLuckLevelOf(player) - luck);
+                }
+                return true;
+            }
+        });
+
+        // SPEED EFFECTS
+        AEAPI.registerEffect(this, "INCREASE_SPEED", new CustomEffect() {
+            @Override
+            public boolean onEffectActivation(EffectActivationEvent e) {
+                if (!e.getEnchantmentType().equals(AEnchantmentType.EFFECT_STATIC))
+                    return false;
+                if (e.getArgs().length == 0)
+                    return false;
+                if (!(e.getMainEntity() instanceof Player))
+                    return false;
+
+                Player player = (Player) e.getMainEntity();
+
+                float multiplier = Float.parseFloat(e.getArgs()[0]);
+
+                if (e.isRemoval()) {
+                    player.setWalkSpeed(player.getWalkSpeed() / multiplier);
+                } else {
+                    player.setWalkSpeed(player.getWalkSpeed() * multiplier);
+                }
+                return true;
+            }
+        });
+        AEAPI.registerEffect(this, "DECREASE_SPEED", new CustomEffect() {
+            @Override
+            public boolean onEffectActivation(EffectActivationEvent e) {
+                if (!e.getEnchantmentType().equals(AEnchantmentType.EFFECT_STATIC))
+                    return false;
+                if (e.getArgs().length == 0)
+                    return false;
+                if (!(e.getMainEntity() instanceof Player))
+                    return false;
+
+                Player player = (Player) e.getMainEntity();
+
+                float multiplier = Float.parseFloat(e.getArgs()[0]);
+
+                if (e.isRemoval()) {
+                    player.setWalkSpeed(player.getWalkSpeed() * multiplier);
+                } else {
+                    player.setWalkSpeed(player.getWalkSpeed() / multiplier);
+                }
+                return true;
+            }
+        });
+
+        // REGEN EFFECTS
+        AEAPI.registerEffect(this, "INCREASE_REGEN", new CustomEffect() {
+            @Override
+            public boolean onEffectActivation(EffectActivationEvent e) {
+                if (!e.getEnchantmentType().equals(AEnchantmentType.EFFECT_STATIC))
+                    return false;
+                if (e.getArgs().length == 0)
+                    return false;
+                if (!(e.getMainEntity() instanceof Player))
+                    return false;
+
+                int regen = Integer.parseInt(e.getArgs()[0]);
+                CursedUser user = getHandlerRegistry().getCursedUserHandler().getCursedUser(e.getMainEntity().getUniqueId());
+
+                if (e.isRemoval()) {
+                    user.setRegen(user.getRegen() - regen);
+                } else {
+                    user.setRegen(user.getRegen() + regen);
+                }
+                return true;
+            }
+        });
+        AEAPI.registerEffect(this, "DECREASE_REGEN", new CustomEffect() {
+            @Override
+            public boolean onEffectActivation(EffectActivationEvent e) {
+                if (!e.getEnchantmentType().equals(AEnchantmentType.EFFECT_STATIC))
+                    return false;
+                if (e.getArgs().length == 0)
+                    return false;
+                if (!(e.getMainEntity() instanceof Player))
+                    return false;
+
+                int regen = Integer.parseInt(e.getArgs()[0]);
+                CursedUser user = getHandlerRegistry().getCursedUserHandler().getCursedUser(e.getMainEntity().getUniqueId());
+
+                if (e.isRemoval()) {
+                    user.setRegen(user.getRegen() + regen);
+                } else {
+                    user.setRegen(user.getRegen() - regen);
+                }
+                return true;
+            }
+        });
+
+        // STRENGTH EFFECTS
+        AEAPI.registerEffect(this, "INCREASE_STRENGTH", new CustomEffect() {
+            @Override
+            public boolean onEffectActivation(EffectActivationEvent e) {
+                if (!e.getEnchantmentType().equals(AEnchantmentType.EFFECT_STATIC))
+                    return false;
+                if (e.getArgs().length == 0)
+                    return false;
+                if (!(e.getMainEntity() instanceof Player))
+                    return false;
+
+                double strength = Double.parseDouble(e.getArgs()[0]);
+                CursedUser user = getHandlerRegistry().getCursedUserHandler().getCursedUser(e.getMainEntity().getUniqueId());
+
+                if (e.isRemoval()) {
+                    user.setStrength(user.getStrength() / strength);
+                } else {
+                    user.setStrength(user.getStrength() * strength);
+                }
+                return true;
+            }
+        });
+        AEAPI.registerEffect(this, "DECREASE_STRENGTH", new CustomEffect() {
+            @Override
+            public boolean onEffectActivation(EffectActivationEvent e) {
+                if (!e.getEnchantmentType().equals(AEnchantmentType.EFFECT_STATIC))
+                    return false;
+                if (e.getArgs().length == 0)
+                    return false;
+                if (!(e.getMainEntity() instanceof Player))
+                    return false;
+
+                double strength = Double.parseDouble(e.getArgs()[0]);
+                CursedUser user = getHandlerRegistry().getCursedUserHandler().getCursedUser(e.getMainEntity().getUniqueId());
+
+                if (e.isRemoval()) {
+                    user.setStrength(user.getStrength() / strength);
+                } else {
+                    user.setStrength(user.getStrength() * strength);
+                }
+                return true;
+            }
+        });
     }
 
     public static Main getInstance() {
@@ -80,5 +417,9 @@ public class Main extends JavaPlugin {
 
     public WorldGuardPlugin getWorldGuardPlugin() {
         return worldGuardPlugin;
+    }
+
+    public EmberPlugin getEmberPlugin() {
+        return emberPlugin;
     }
 }

@@ -2,7 +2,7 @@ package me.lightlord323dev.cursedlevels.handler.skill;
 
 import me.lightlord323dev.cursedlevels.Main;
 import me.lightlord323dev.cursedlevels.api.skill.Skill;
-import me.lightlord323dev.cursedlevels.api.skill.data.skills.CombatData;
+import me.lightlord323dev.cursedlevels.api.skill.data.skills.combat.CombatData;
 import me.lightlord323dev.cursedlevels.api.user.CursedUser;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -30,14 +30,8 @@ public class CombatHandler extends SkillHandler {
         if (e.getEntity().getKiller() != null) {
             CursedUser cursedUser = Main.getInstance().getHandlerRegistry().getCursedUserHandler().getCursedUser(e.getEntity().getKiller().getUniqueId());
 
-            int exp;
-
             // TRACKER UPDATE
-            if (e.getEntity() instanceof Player)
-                exp = skillData.getPlayerExp();
-            else
-                exp = skillData.getEntityExp();
-
+            int exp = skillData.getEntityExp(e.getEntity());
             cursedUser.setSkillExp(skillData.getSkill(), cursedUser.getSkillExp(skillData.getSkill()) + exp);
 
             // LEVELUP CHECK

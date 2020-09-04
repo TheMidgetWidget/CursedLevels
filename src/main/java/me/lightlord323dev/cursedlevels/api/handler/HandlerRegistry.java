@@ -37,6 +37,7 @@ public class HandlerRegistry {
                 cursedUserHandler = new CursedUserHandler(),
                 skillMainMenuHandler = new SkillMainMenuHandler(),
                 new CursedUserHealthHandler(),
+                new CustomEffectStrengthHandler(),
 
                 // SKILL HANDLERS
                 new MiningHandler(),

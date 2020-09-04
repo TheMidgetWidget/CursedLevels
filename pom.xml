@@ -40,6 +40,24 @@
             <version>1.0</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.mineacademy.plugin</groupId>
+            <artifactId>Boss-API</artifactId>
+            <version>3.8.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>n3kas.ae</groupId>
+            <artifactId>AdvancedEnchantments</artifactId>
+            <version>1.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>me.clip</groupId>
+            <artifactId>placeholderapi</artifactId>
+            <version>2.10.9</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
     <build>
         <finalName>CursedLevels</finalName>
@@ -80,6 +98,14 @@
         <repository>
             <id>sk89q-repo</id>
             <url>https://maven.enginehub.org/repo/</url>
+        </repository>
+        <repository>
+            <id>mineacademy-repo</id>
+            <url>https://bitbucket.org/kangarko/libraries/raw/master</url>
+        </repository>
+        <repository>
+            <id>placeholderapi</id>
+            <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
     </repositories>
 </project>
