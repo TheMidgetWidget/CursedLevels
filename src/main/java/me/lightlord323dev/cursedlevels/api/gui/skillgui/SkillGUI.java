@@ -34,8 +34,10 @@ public class SkillGUI extends CursedGUI {
         SkillData skillData = Main.getInstance().getHandlerRegistry().getSkillDataHandler().getSkillData(skill);
         this.items.forEach(guiItem -> {
             String msg = skillData.getMessage(guiItem.getIndex());
-            if (msg != null)
-                guiItem.setItemStack(new ItemBuilder(guiItem.getItemStack()).setLore(msg).build());
+            if (msg != null) {
+                String[] lore = msg.split("\\n");
+                guiItem.setItemStack(new ItemBuilder(guiItem.getItemStack()).setLore(lore).build());
+            }
         });
         this.ownerUUID = owner.getUniqueId().toString();
         Main.getInstance().getHandlerRegistry().getSkillGUIHandler().cacheActiveSkillGUI(this);
