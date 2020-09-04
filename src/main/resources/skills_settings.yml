@@ -15,6 +15,8 @@ skills:
       multiplier: 200
     level-cap: 30
     gui-title: "&aMining"
+    rewards:
+      1: "&aThis is level 1"
     # format is -> BLOCK;EXP
     blocks:
       - STONE;1
@@ -38,6 +40,8 @@ skills:
       multiplier: 200
     level-cap: 30
     gui-title: "&aCombat"
+    rewards:
+      1: "&aThis is level 1"
     entities:
       - PLAYER;5
       - ZOMBIE;2
@@ -65,6 +69,8 @@ skills:
       multiplier: 200
     level-cap: 30
     gui-title: "&aForaging"
+    rewards:
+      1: "&aThis is level 1"
     bonus:
       # this is a flat multiplier
       speed-multiplier: 1.5
@@ -83,6 +89,8 @@ skills:
       multiplier: 200
     level-cap: 30
     gui-title: "&aFishing"
+    rewards:
+      1: "&aThis is level 1"
     bonus:
       # percentage varies until 100
       better-item-base: 25
@@ -103,6 +111,8 @@ skills:
       multiplier: 200
     level-cap: 30
     gui-title: "&aFarming"
+    rewards:
+      1: "&aThis is level 1"
     bonus:
       # amt of health regenerated
       regen-base: 1
@@ -123,6 +133,8 @@ skills:
       multiplier: 200
     level-cap: 30
     gui-title: "&aCraftsmanship"
+    rewards:
+      1: "&aThis is level 1"
     bonus:
       luck-increment: 2
   blacksmithing:
@@ -136,6 +148,8 @@ skills:
       multiplier: 200
     level-cap: 30
     gui-title: "&aBlacksmithing"
+    rewards:
+      1: "&aThis is level 1"
     bonus:
       # amt of mana regenerated
       mana-regen-base: 1
@@ -152,6 +166,8 @@ skills:
       multiplier: 200
     level-cap: 30
     gui-title: "&aDefense"
+    rewards:
+      1: "&aThis is level 1"
     bonus:
       # amt of dmg decreased
       defense-base: 1
@@ -168,6 +184,8 @@ skills:
       multiplier: 200
     level-cap: 30
     gui-title: "&aRunecrafting"
+    rewards:
+      1: "&aThis is level 1"
     bonus:
       # amt of wisdom
       wisdom-base: 1

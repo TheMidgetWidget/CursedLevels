@@ -9,7 +9,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Luda on 8/29/2020.
@@ -21,6 +23,7 @@ public abstract class SkillData {
     private FileConfiguration config;
     private String rootPath, displayName, lore, guiTitle;
     private int levelCap, levelUpBase, levelUpMultiplier;
+    private Map<Integer, String> messages;
 
     public SkillData(Skill skill) {
         this.skill = skill;
@@ -36,6 +39,8 @@ public abstract class SkillData {
         this.levelUpBase = config.getInt(rootPath + ".level-up.base");
         this.levelUpMultiplier = config.getInt(rootPath + ".level-up.multiplier");
         this.guiTitle = ChatColor.translateAlternateColorCodes('&', config.getString(rootPath + ".gui-title"));
+        this.messages = new HashMap<>();
+        config.getConfigurationSection(rootPath + ".rewards").getKeys(false).forEach(str -> messages.put(Integer.parseInt(str), ChatColor.translateAlternateColorCodes('&', config.getString(rootPath + ".rewards." + str))));
         loadData();
     }
 
@@ -94,6 +99,12 @@ public abstract class SkillData {
         ItemStack skillItem = new ItemBuilder(this.itemStack.clone()).setDisplayName(this.displayName.replace("%level%", level + "").replace("%levelCap%", levelCap + "")).setLore(lore.replace("%level%", level + "").replace("%levelCap%", levelCap + "").replace("%currentExp%", currentExp + "").replace("%nextExp%", nextExp + "")).build();
         skillItem = new NBTApi(skillItem).setString("skillItem", this.skill.toString()).getItemStack();
         return skillItem;
+    }
+
+    public String getMessage(int level) {
+        if (messages.containsKey(level))
+            return messages.get(level);
+        return null;
     }
 
     public Skill getSkill() {

@@ -4,8 +4,8 @@ import me.lightlord323dev.cursedlevels.Main;
 import me.lightlord323dev.cursedlevels.api.gui.CursedGUI;
 import me.lightlord323dev.cursedlevels.api.gui.GUIItem;
 import me.lightlord323dev.cursedlevels.api.skill.Skill;
+import me.lightlord323dev.cursedlevels.api.skill.data.SkillData;
 import me.lightlord323dev.cursedlevels.util.ItemBuilder;
-import me.lightlord323dev.cursedlevels.util.NBTApi;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -30,8 +30,13 @@ public class SkillGUI extends CursedGUI {
                 new GUIItem(new ItemBuilder(Material.SIGN).setDisplayName(ChatColor.RED + "DOWN").build(), 8)
         );
         this.items = items;
-        this.items.forEach(guiItem -> guiItem.setItemStack(new NBTApi(guiItem.getItemStack()).getItemStack()));
         this.title = title;
+        SkillData skillData = Main.getInstance().getHandlerRegistry().getSkillDataHandler().getSkillData(skill);
+        this.items.forEach(guiItem -> {
+            String msg = skillData.getMessage(guiItem.getIndex());
+            if (msg != null)
+                guiItem.setItemStack(new ItemBuilder(guiItem.getItemStack()).setLore(msg).build());
+        });
         this.ownerUUID = owner.getUniqueId().toString();
         Main.getInstance().getHandlerRegistry().getSkillGUIHandler().cacheActiveSkillGUI(this);
         this.skill = skill;

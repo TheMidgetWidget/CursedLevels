@@ -1,5 +1,6 @@
 package me.lightlord323dev.cursedlevels.handler.skill;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import me.lightlord323dev.cursedlevels.Main;
 import me.lightlord323dev.cursedlevels.api.handler.Handler;
 import me.lightlord323dev.cursedlevels.api.skill.data.SkillData;
@@ -14,11 +15,12 @@ import org.bukkit.event.Listener;
  */
 public class SkillHandler implements Handler, Listener {
 
-    private String expMsg;
+    private String expMsg, levelUpMsg;
     private Sound levelUp, gainExp;
 
     @Override
     public void onLoad() {
+        this.levelUpMsg = Main.getInstance().getHandlerRegistry().getMessageUtil().getMessage("action-bar.level-up");
         this.expMsg = Main.getInstance().getHandlerRegistry().getMessageUtil().getMessage("action-bar.gain-exp");
         this.levelUp = Sound.valueOf(Main.getInstance().getSettingsFile().getConfig().getString("level-up-sound"));
         this.gainExp = Sound.valueOf(Main.getInstance().getSettingsFile().getConfig().getString("exp-gain-sound"));
@@ -34,11 +36,15 @@ public class SkillHandler implements Handler, Listener {
             if (level >= skill.getLevelCap())
                 return;
             cursedUser.addLevel(skill.getSkill());
-            String msg = Main.getInstance().getHandlerRegistry().getMessageUtil().getMessage("action-bar.level-up").replace("%skill%", skill.getSkill().toString()).replace("%level%", (level + 1) + "");
+            String msg = levelUpMsg.replace("%skill%", skill.getSkill().toString()).replace("%level%", (level + 1) + "");
+            msg = PlaceholderAPI.setPlaceholders(player, msg);
             cursedUser.setLastSentLevelUp(System.currentTimeMillis());
             CursedUserHealthHandler.sendActionBar(player, msg);
             if (levelUp != null)
                 player.playSound(player.getLocation(), levelUp, 1f, 1f);
+            String chatMsg = skill.getMessage(level);
+            if (chatMsg != null)
+                player.sendMessage(chatMsg);
             checkLevelUp(player, cursedUser, currentExp, skill);
         }
     }
