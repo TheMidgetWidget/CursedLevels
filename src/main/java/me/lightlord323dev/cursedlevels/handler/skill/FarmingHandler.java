@@ -89,7 +89,8 @@ public class FarmingHandler extends SkillHandler {
         checkLevelUp(e.getWhoBroke(), cursedUser, cursedUser.getSkillExp(skillData.getSkill()), skillData);
 
         if (prevLevel < cursedUser.getSkillLevel(skillData.getSkill())) {
-            cursedUser.setRegen(cursedUser.getRegen() + (int) skillData.getRegenAmt(cursedUser.getSkillLevel(skillData.getSkill())));
+            int prevRegen = (int) skillData.getRegenAmt(prevLevel);
+            cursedUser.setRegen(cursedUser.getRegen() - prevRegen + (int) skillData.getRegenAmt(cursedUser.getSkillLevel(skillData.getSkill())));
         }
 
         // FARMING BONUS

@@ -21,7 +21,10 @@ public class DefenseData extends SkillData {
     }
 
     public double getDefenseAmt(int level) {
-        return getPositiveGradientAmt(defenseBase, defenseMultiplier, level);
+        return defenseMultiplier * level + defenseBase;
     }
 
+    public double getDefenseBase() {
+        return defenseBase;
+    }
 }

@@ -37,8 +37,16 @@ public class BlacksmithingHandler extends SkillHandler {
             cursedUser.setSkillExp(skillData.getSkill(), cursedUser.getSkillExp(skillData.getSkill()) + exp);
             sendExpNotification(player, cursedUser, exp, skillData);
 
+            int prevLevel = cursedUser.getSkillLevel(skillData.getSkill());
+
             // LEVELUP CHECK
             checkLevelUp(player, cursedUser, cursedUser.getSkillExp(skillData.getSkill()), skillData);
+            int level = cursedUser.getSkillLevel(skillData.getSkill());
+
+            if (prevLevel < level) {
+                int prevRegen = (int) skillData.getManaRegenAmt(prevLevel);
+                cursedUser.setManaregen(cursedUser.getManaregen() - prevRegen + (int) skillData.getManaRegenAmt(level));
+            }
         }
     }
 

@@ -5,6 +5,8 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.Arrays;
+
 /**
  * Created by Luda on 7/17/2020.
  */
@@ -39,14 +41,14 @@ public class ItemBuilder {
 
     public ItemBuilder setLore(String lore) {
         ItemMeta meta = this.itemStack.getItemMeta();
-        meta.setLore(Lists.newArrayList(" ", " ", lore, " ", " "));
+        meta.setLore(Lists.newArrayList(lore));
         this.itemStack.setItemMeta(meta);
         return this;
     }
 
     public ItemBuilder setLore(String... lore) {
         ItemMeta meta = this.itemStack.getItemMeta();
-        meta.setLore(Lists.asList(" ", " ", lore));
+        meta.setLore(Arrays.asList(lore));
         this.itemStack.setItemMeta(meta);
         return this;
     }

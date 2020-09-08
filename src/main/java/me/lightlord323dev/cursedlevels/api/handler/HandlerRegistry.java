@@ -47,7 +47,8 @@ public class HandlerRegistry {
                 new FarmingHandler(),
                 new BlacksmithingHandler(),
                 new DefenseHandler(),
-                new CraftsmanshipHandler()
+                new CraftsmanshipHandler(),
+                new RunecraftingHandler()
         ));
         // call onLoad method
         handlers.forEach(handler -> {

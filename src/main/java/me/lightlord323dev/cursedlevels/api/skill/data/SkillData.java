@@ -24,6 +24,9 @@ public abstract class SkillData {
     private String rootPath, displayName, lore, guiTitle;
     private int levelCap, levelUpBase, levelUpMultiplier;
     private Map<Integer, String> messages;
+    // progress bar
+    private String acquired, unAcquired;
+    private int numberOfCharacters;
 
     public SkillData(Skill skill) {
         this.skill = skill;
@@ -41,6 +44,13 @@ public abstract class SkillData {
         this.guiTitle = ChatColor.translateAlternateColorCodes('&', config.getString(rootPath + ".gui-title"));
         this.messages = new HashMap<>();
         config.getConfigurationSection(rootPath + ".rewards").getKeys(false).forEach(str -> messages.put(Integer.parseInt(str), ChatColor.translateAlternateColorCodes('&', config.getString(rootPath + ".rewards." + str))));
+
+        // progress bar
+        String disp = Main.getInstance().getHandlerRegistry().getMessageUtil().getMessage("main-menu-gui.progress-bar-character");
+        this.acquired = Main.getInstance().getHandlerRegistry().getMessageUtil().getMessage("main-menu-gui.progress-bar-acquired-color") + disp;
+        this.unAcquired = Main.getInstance().getHandlerRegistry().getMessageUtil().getMessage("main-menu-gui.progress-bar-unacquired-color") + disp;
+        this.numberOfCharacters = Integer.parseInt(Main.getInstance().getHandlerRegistry().getMessageUtil().getMessage("main-menu-gui.progress-bar-number-of-characters"));
+
         loadData();
     }
 
@@ -96,8 +106,24 @@ public abstract class SkillData {
             nextExp = getAmtNeededToLevelUp(level);
         else
             nextExp = getAmtNeededToLevelUp(level - 1);
-        ItemStack skillItem = new ItemBuilder(this.itemStack.clone()).setDisplayName(this.displayName.replace("%level%", level + "").replace("%levelCap%", levelCap + "")).setLore(lore.replace("%level%", level + "").replace("%levelCap%", levelCap + "").replace("%currentExp%", currentExp + "").replace("%nextExp%", nextExp + "")).build();
-        skillItem = new NBTApi(skillItem).setString("skillItem", this.skill.toString()).getItemStack();
+        StringBuilder percentageBar = new StringBuilder();
+        double percentage = (currentExp * 100) / (double) nextExp;
+        int num = (int) (percentage * numberOfCharacters / 100);
+        num--;
+        for (int i = 0; i < numberOfCharacters; i++) {
+            if (i < num)
+                percentageBar.append(acquired);
+            else
+                percentageBar.append(unAcquired);
+        }
+        String lore = this.lore.replace("%level%", String.valueOf(level)).replace("%nextLevel%", String.valueOf(level + 1)).replace("%levelCap%", String.valueOf(levelCap)).replace("%currentExp%", String.valueOf(currentExp)).replace("%nextExp%", String.valueOf(nextExp)).replace("%percentage%", String.format("%.2f", percentage)).replace("%progressBar%", percentageBar.toString());
+        String msg = getMessage(level + 1);
+        if (msg != null)
+            lore = lore.replace("%nextLevelMessage%", msg);
+        else
+            lore = lore.replace("%nextLevelMessage%", "");
+        ItemStack skillItem = new ItemBuilder(this.itemStack.clone()).setDisplayName(this.displayName.replace("%level%", level + "").replace("%levelCap%", levelCap + "")).setLore(lore.split("\\n")).build();
+        skillItem = new NBTApi(skillItem).setString("skillItem", this.skill.name()).getItemStack();
         return skillItem;
     }
 

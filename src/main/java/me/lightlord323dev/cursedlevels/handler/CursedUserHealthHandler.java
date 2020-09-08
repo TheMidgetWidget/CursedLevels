@@ -4,6 +4,7 @@ import me.lightlord323dev.cursedlevels.Main;
 import me.lightlord323dev.cursedlevels.api.event.CursedUserDamageEvent;
 import me.lightlord323dev.cursedlevels.api.handler.Handler;
 import me.lightlord323dev.cursedlevels.api.skill.Skill;
+import me.lightlord323dev.cursedlevels.api.skill.data.skills.BlacksmithingData;
 import me.lightlord323dev.cursedlevels.api.skill.data.skills.FarmingData;
 import me.lightlord323dev.cursedlevels.api.user.CursedUser;
 import net.minecraft.server.v1_8_R3.IChatBaseComponent;
@@ -16,6 +17,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
+import org.bukkit.plugin.IllegalPluginAccessException;
 
 import java.util.concurrent.TimeUnit;
 
@@ -26,35 +28,48 @@ public class CursedUserHealthHandler implements Handler, Listener {
 
     private String actionBarMessage;
     private FarmingData farmingData;
+    private BlacksmithingData blacksmithingData;
+    private long combatTag;
 
     @Override
     public void onLoad() {
         this.actionBarMessage = Main.getInstance().getHandlerRegistry().getMessageUtil().getMessage("action-bar.main-hud");
         this.farmingData = (FarmingData) Main.getInstance().getHandlerRegistry().getSkillDataHandler().getSkillData(Skill.FARMING);
+        this.blacksmithingData = (BlacksmithingData) Main.getInstance().getHandlerRegistry().getSkillDataHandler().getSkillData(Skill.BLACKSMITHING);
+        this.combatTag = (long) (Main.getInstance().getSettingsFile().getConfig().getDouble("combat-tag-timer") * 1000);
         Main.getInstance().getExecutorService().scheduleAtFixedRate(() -> {
-            Bukkit.getServer().getOnlinePlayers().forEach(player -> {
-                CursedUser cursedUser = Main.getInstance().getHandlerRegistry().getCursedUserHandler().getCursedUser(player.getUniqueId());
-                if (System.currentTimeMillis() - cursedUser.getLastInCombat() >= 5000) {
-                    int regenAmt = cursedUser.getRegen();
-                    if (regenAmt == 0)
-                        regenAmt = (int) farmingData.getRegenBase();
-                    cursedUser.setHealth(cursedUser.getHealth() + regenAmt);
+            try {
+                Bukkit.getServer().getOnlinePlayers().forEach(player -> {
+                    CursedUser cursedUser = Main.getInstance().getHandlerRegistry().getCursedUserHandler().getCursedUser(player.getUniqueId());
+                    if (cursedUser != null) {
+                        if (System.currentTimeMillis() - cursedUser.getLastInCombat() >= combatTag) {
+                            int regenAmt = cursedUser.getRegen(), manaRegenAmt = cursedUser.getManaregen();
+                            if (regenAmt == 0)
+                                cursedUser.setRegen((int) farmingData.getRegenBase());
 
-                    // UPDATE HEALTH
-                    int cursedUserHealth = cursedUser.getHealth();
-                    double healthFactor = cursedUserHealth / (double) cursedUser.getMaxHealth(), newHealth = player.getMaxHealth() * healthFactor;
-                    if (healthFactor >= 0.05 && newHealth - player.getHealth() >= 0.5) {
+                            cursedUser.setHealth(cursedUser.getHealth() + regenAmt);
+                            cursedUser.setMana(cursedUser.getMana() + manaRegenAmt);
+
+                            // UPDATE HEALTH
+                            int cursedUserHealth = cursedUser.getHealth();
+                            double healthFactor = cursedUserHealth / (double) cursedUser.getMaxHealth(), newHealth = player.getMaxHealth() * healthFactor;
+                            if (healthFactor >= 0.05 && newHealth - player.getHealth() >= 0.5) {
+                                Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getInstance(), () -> {
+                                    player.setHealth(newHealth);
+                                });
+                            }
+                        }
                         Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getInstance(), () -> {
-                            player.setHealth(newHealth);
+                            int stayDuration = 2300;
+                            if (System.currentTimeMillis() - cursedUser.getLastSentLevelUp() >= stayDuration && System.currentTimeMillis() - cursedUser.getLastSentExp() >= stayDuration)
+                                sendActionBar(player, actionBarMessage.replace("%health%", String.valueOf(cursedUser.getHealth())).replace("%maxHealth%", String.valueOf(cursedUser.getMaxHealth())).replace("%defense%", String.valueOf(cursedUser.getDefense())).replace("%mana%", String.valueOf(cursedUser.getMana())).replace("%speed%", String.valueOf(player.getWalkSpeed())).replace("%regen%", String.valueOf(cursedUser.getRegen())).replace("%strength%", String.valueOf((int) (cursedUser.getStrength() * 100))).replace("%luck%", String.valueOf(Main.getInstance().getEmberPlugin().getItemManager().getLuckLevelOf(player))).replace("%maxMana%", String.valueOf(cursedUser.getMaxMana())));
                         });
                     }
-                }
-                Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getInstance(), () -> {
-                    int stayDuration = 2300;
-                    if (System.currentTimeMillis() - cursedUser.getLastSentLevelUp() >= stayDuration && System.currentTimeMillis() - cursedUser.getLastSentExp() >= stayDuration)
-                        sendActionBar(player, actionBarMessage.replace("%health%", cursedUser.getHealth() + "").replace("%maxHealth%", cursedUser.getMaxHealth() + ""));
                 });
-            });
+            } catch (IllegalPluginAccessException e) {
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }, 0, 500, TimeUnit.MILLISECONDS);
     }
 
@@ -84,10 +99,15 @@ public class CursedUserHealthHandler implements Handler, Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onCursedUserDmg(CursedUserDamageEvent e) {
+        int dmg = e.getDamage() - e.getCursedUser().getDefense() / 10; // defense divided by 10
+        if (dmg < 0)
+            dmg = 0;
+        e.setDamage(dmg);
+
         e.getCursedUser().setLastInCombat(System.currentTimeMillis());
         e.getCursedUser().setHealth(e.getCursedUser().getHealth() - e.getDamage());
         Player player = Bukkit.getServer().getPlayer(e.getCursedUser().getUniqueId());
-        sendActionBar(player, actionBarMessage.replace("%health%", e.getCursedUser().getHealth() + "").replace("%maxHealth%", e.getCursedUser().getMaxHealth() + ""));
+        sendActionBar(player, actionBarMessage.replace("%health%", String.valueOf(e.getCursedUser().getHealth())).replace("%maxHealth%", String.valueOf(e.getCursedUser().getMaxHealth())).replace("%defense%", String.valueOf(e.getCursedUser().getDefense())).replace("%mana%", String.valueOf(e.getCursedUser().getMana())).replace("%speed%", String.valueOf(player.getWalkSpeed())).replace("%regen%", String.valueOf(e.getCursedUser().getRegen())).replace("%strength%", String.valueOf((int) (e.getCursedUser().getStrength() * 100))).replace("%luck%", String.valueOf(Main.getInstance().getEmberPlugin().getItemManager().getLuckLevelOf(player))).replace("%maxMana%", String.valueOf(e.getCursedUser().getMaxMana())));
         if (e.getCursedUser().getHealth() <= 0) {
             player.setHealth(0);
             e.getCursedUser().setHealth(e.getCursedUser().getMaxHealth());
@@ -97,7 +117,7 @@ public class CursedUserHealthHandler implements Handler, Listener {
 
     @EventHandler
     public void onPlayerRegainHealth(EntityRegainHealthEvent event) {
-        if (event.getEntity() instanceof Player && event.getRegainReason() == EntityRegainHealthEvent.RegainReason.SATIATED || event.getRegainReason() == EntityRegainHealthEvent.RegainReason.REGEN || event.getRegainReason() == EntityRegainHealthEvent.RegainReason.MAGIC_REGEN)
+        if (event.getEntity() instanceof Player)
             event.setCancelled(true);
     }
 

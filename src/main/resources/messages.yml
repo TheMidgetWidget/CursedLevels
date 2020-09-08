@@ -1,9 +1,15 @@
 main-menu-gui:
   title: "&6Your skills"
+  player-head-name: "&6Your stats"
+  player-head-lore: "&aHealth: &6%health%\n&aMax Health: &6%maxHealth%\n&aStrength: &6%strength%"
+  progress-bar-character: "|"
+  progress-bar-acquired-color: "&a"
+  progress-bar-unacquired-color: "&c"
+  progress-bar-number-of-characters: 10
 skills-gui:
   scroll-error: "&cYou cannot scroll any further"
 skills:
-  level-up-message: "&aYou have levelled up %skill%!\nCurrent level: %level%"
+  level-up-message: "&a%skill% %prevLevel%->%level% %rewards%"
 action-bar:
   main-hud: "&aHEALTH: &6%health%&7/&6%maxHealth%"
   level-up: "&aYou have levelled up %skill% to %level%"

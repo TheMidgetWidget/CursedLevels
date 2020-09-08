@@ -21,6 +21,10 @@ public class BlacksmithingData extends SkillData {
     }
 
     public double getManaRegenAmt(int level) {
-        return getPositiveGradientAmt(manaRegenBase, manaRegenMultiplier, level);
+        return manaRegenBase + manaRegenMultiplier * level;
+    }
+
+    public double getManaRegenBase() {
+        return manaRegenBase;
     }
 }

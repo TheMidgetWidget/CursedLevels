@@ -18,13 +18,12 @@ public class RunecraftingHandler extends SkillHandler {
     @Override
     public void onLoad() {
         super.onLoad();
-        skillData = (RunecraftingData) Main.getInstance().getHandlerRegistry().getSkillDataHandler().getSkillData(Skill.MINING);
+        skillData = (RunecraftingData) Main.getInstance().getHandlerRegistry().getSkillDataHandler().getSkillData(Skill.RUNECRAFTING);
     }
 
     // TRACKER
     @EventHandler
     public void onCraft(EmberCraftEvent e) {
-
         Player player = (Player) e.getPlayer();
 
         CursedUser cursedUser = Main.getInstance().getHandlerRegistry().getCursedUserHandler().getCursedUser(e.getPlayer().getUniqueId());
@@ -40,7 +39,8 @@ public class RunecraftingHandler extends SkillHandler {
         checkLevelUp(player, cursedUser, cursedUser.getSkillExp(skillData.getSkill()), skillData);
 
         if (level < cursedUser.getSkillLevel(skillData.getSkill())) {
-            cursedUser.setMana(cursedUser.getMana() + (int) skillData.getWisdomAmt(cursedUser.getSkillLevel(skillData.getSkill())));
+            int prevMana = (int) skillData.getWisdomAmt(level);
+            cursedUser.setMaxMana(cursedUser.getMaxMana() - prevMana + (int) skillData.getWisdomAmt(cursedUser.getSkillLevel(skillData.getSkill())));
         }
     }
 

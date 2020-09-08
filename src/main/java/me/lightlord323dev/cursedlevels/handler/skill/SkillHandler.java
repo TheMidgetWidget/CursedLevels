@@ -36,15 +36,19 @@ public class SkillHandler implements Handler, Listener {
             if (level >= skill.getLevelCap())
                 return;
             cursedUser.addLevel(skill.getSkill());
-            String msg = levelUpMsg.replace("%skill%", skill.getSkill().toString()).replace("%level%", (level + 1) + "");
+            String msg = levelUpMsg.replace("%skill%", skill.getSkill().toString()).replace("%level%", String.valueOf((level + 1)));
             msg = PlaceholderAPI.setPlaceholders(player, msg);
             cursedUser.setLastSentLevelUp(System.currentTimeMillis());
             CursedUserHealthHandler.sendActionBar(player, msg);
             if (levelUp != null)
                 player.playSound(player.getLocation(), levelUp, 1f, 1f);
-            String chatMsg = skill.getMessage(level);
-            if (chatMsg != null)
-                player.sendMessage(chatMsg);
+            String levelUpChatMsg = Main.getInstance().getHandlerRegistry().getMessageUtil().getMessage("skills.level-up-message");
+            String rewardsMsg = skill.getMessage(level + 1);
+            if (rewardsMsg != null)
+                levelUpChatMsg = levelUpChatMsg.replace("%rewards%", rewardsMsg);
+            else
+                levelUpChatMsg = levelUpChatMsg.replace("%rewards%", "");
+            player.sendMessage(levelUpChatMsg.replace("%skill%", skill.getSkill().toString()).replace("%prevLevel%", String.valueOf(level)).replace("%level%", String.valueOf(cursedUser.getSkillLevel(skill.getSkill()))));
             checkLevelUp(player, cursedUser, currentExp, skill);
         }
     }
@@ -58,7 +62,7 @@ public class SkillHandler implements Handler, Listener {
                 nextExp = skill.getAmtNeededToLevelUp(level);
             else
                 nextExp = skill.getAmtNeededToLevelUp(level - 1);
-            CursedUserHealthHandler.sendActionBar(player, expMsg.replace("%exp%", exp + "").replace("%skill%", skill.getSkill().toString()).replace("%currentExp%", cursedUser.getSkillExp(skill.getSkill()) + "").replace("%nextExp%", nextExp + ""));
+            CursedUserHealthHandler.sendActionBar(player, expMsg.replace("%exp%", String.valueOf(exp)).replace("%skill%", skill.getSkill().toString()).replace("%currentExp%", String.valueOf(cursedUser.getSkillExp(skill.getSkill()))).replace("%nextExp%", String.valueOf(nextExp)));
             if (gainExp != null)
                 player.playSound(player.getLocation(), gainExp, 1f, 1f);
         }

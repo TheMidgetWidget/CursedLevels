@@ -12,8 +12,11 @@ import me.lightlord323dev.cursedlevels.api.skill.Skill;
 import me.lightlord323dev.cursedlevels.api.skill.data.skills.ForagingData;
 import me.lightlord323dev.cursedlevels.api.user.CursedUser;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -48,7 +51,10 @@ public class ForagingHandler extends SkillHandler {
         if (e.getBlock().getType() == Material.LOG || e.getBlock().getType() == Material.LOG_2 || e.getBlock().getType() == Material.WOOD) {
             CursedUser cursedUser = Main.getInstance().getHandlerRegistry().getCursedUserHandler().getCursedUser(e.getPlayer().getUniqueId());
 
-            int exp = 1;
+            int exp = skillData.getBlockExp(e.getBlock());
+
+            if (exp == -1)
+                return;
 
             // TRACKER UPDATE
             cursedUser.setSkillExp(skillData.getSkill(), cursedUser.getSkillExp(skillData.getSkill()) + exp);
@@ -61,9 +67,7 @@ public class ForagingHandler extends SkillHandler {
             int level = cursedUser.getSkillLevel(skillData.getSkill());
             if (level > 0) {
                 // SPEED
-                if (e.getPlayer().getWalkSpeed() == 0.2f) {
-                    e.getPlayer().setWalkSpeed((float) (0.2 * skillData.getSpeedMultiplier()));
-                }
+                applySpeedCheck(e.getPlayer(), level);
                 // DOUBLE WOOD BONUS
                 double chance = ThreadLocalRandom.current().nextInt(0, 401) / 400.0;
                 if (chance <= skillData.getDoubleWoodChance(level)) {
@@ -94,20 +98,28 @@ public class ForagingHandler extends SkillHandler {
         int level = cursedUser.getSkillLevel(skillData.getSkill());
         if (level > 0) {
             // SPEED
-            if (e.getWhoBroke().getWalkSpeed() == 0.2f) {
-                e.getWhoBroke().setWalkSpeed((float) (0.2 * skillData.getSpeedMultiplier()));
-            }
+            applySpeedCheck(e.getWhoBroke(), level);
             // DOUBLE WOOD BONUS
             double chance = ThreadLocalRandom.current().nextInt(0, 401) / 400.0;
             if (chance <= skillData.getDoubleWoodChance(level)) {
-                e.setCancelled(true);
-                e.getBrokenBlock().getDrops().forEach(itemStack -> {
-                    itemStack.setAmount(itemStack.getAmount() * 2);
-                    e.getBrokenBlock().getWorld().dropItemNaturally(e.getBrokenBlock().getLocation(), itemStack);
-                });
-                e.getBrokenBlock().setType(Material.AIR);
+                e.getBrokenBlock().getDrops().forEach(itemStack -> e.getBrokenBlock().getWorld().dropItemNaturally(e.getBrokenBlock().getLocation(), itemStack));
             }
         }
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onPlayerJoin(PlayerJoinEvent e) {
+        CursedUser cursedUser = Main.getInstance().getHandlerRegistry().getCursedUserHandler().getCursedUser(e.getPlayer().getUniqueId());
+        applySpeedCheck(e.getPlayer(), cursedUser.getSkillLevel(skillData.getSkill()));
+    }
+
+    private void applySpeedCheck(Player player, int level) {
+        float speed = skillData.getSpeed(level);
+        if (speed > 1)
+            speed = 1;
+        if (speed < 0)
+            speed = 0.2f;
+        player.setWalkSpeed(speed);
     }
 
 }

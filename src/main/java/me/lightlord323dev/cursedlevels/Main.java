@@ -92,7 +92,7 @@ public class Main extends JavaPlugin {
         AEAPI.registerEffect(this, "INCREASE_HEALTH", new CustomEffect() {
             @Override
             public boolean onEffectActivation(EffectActivationEvent e) {
-                if (!e.getEnchantmentType().equals(AEnchantmentType.EFFECT_STATIC))
+                if (!e.getEnchantmentType().equals(AEnchantmentType.EFFECT_STATIC) && !e.getEnchantmentType().equals(AEnchantmentType.HELD))
                     return false;
                 if (e.getArgs().length == 0)
                     return false;
@@ -113,7 +113,7 @@ public class Main extends JavaPlugin {
         AEAPI.registerEffect(this, "DECREASE_HEALTH", new CustomEffect() {
             @Override
             public boolean onEffectActivation(EffectActivationEvent e) {
-                if (!e.getEnchantmentType().equals(AEnchantmentType.EFFECT_STATIC))
+                if (!e.getEnchantmentType().equals(AEnchantmentType.EFFECT_STATIC) && !e.getEnchantmentType().equals(AEnchantmentType.HELD))
                     return false;
                 if (e.getArgs().length == 0)
                     return false;
@@ -136,7 +136,7 @@ public class Main extends JavaPlugin {
         AEAPI.registerEffect(this, "INCREASE_DEFENSE", new CustomEffect() {
             @Override
             public boolean onEffectActivation(EffectActivationEvent e) {
-                if (!e.getEnchantmentType().equals(AEnchantmentType.EFFECT_STATIC))
+                if (!e.getEnchantmentType().equals(AEnchantmentType.EFFECT_STATIC) && !e.getEnchantmentType().equals(AEnchantmentType.HELD))
                     return false;
                 if (e.getArgs().length == 0)
                     return false;
@@ -157,7 +157,7 @@ public class Main extends JavaPlugin {
         AEAPI.registerEffect(this, "DECREASE_DEFENSE", new CustomEffect() {
             @Override
             public boolean onEffectActivation(EffectActivationEvent e) {
-                if (!e.getEnchantmentType().equals(AEnchantmentType.EFFECT_STATIC))
+                if (!e.getEnchantmentType().equals(AEnchantmentType.EFFECT_STATIC) && !e.getEnchantmentType().equals(AEnchantmentType.HELD))
                     return false;
                 if (e.getArgs().length == 0)
                     return false;
@@ -180,7 +180,7 @@ public class Main extends JavaPlugin {
         AEAPI.registerEffect(this, "INCREASE_MANA", new CustomEffect() {
             @Override
             public boolean onEffectActivation(EffectActivationEvent e) {
-                if (!e.getEnchantmentType().equals(AEnchantmentType.EFFECT_STATIC))
+                if (!e.getEnchantmentType().equals(AEnchantmentType.EFFECT_STATIC) && !e.getEnchantmentType().equals(AEnchantmentType.HELD))
                     return false;
                 if (e.getArgs().length == 0)
                     return false;
@@ -191,9 +191,9 @@ public class Main extends JavaPlugin {
                 CursedUser user = getHandlerRegistry().getCursedUserHandler().getCursedUser(e.getMainEntity().getUniqueId());
 
                 if (e.isRemoval()) {
-                    user.setMana(user.getMana() - mana);
+                    user.setMaxMana(user.getMaxMana() - mana);
                 } else {
-                    user.setMana(user.getMana() + mana);
+                    user.setMaxMana(user.getMaxMana() + mana);
                 }
                 return true;
             }
@@ -201,7 +201,7 @@ public class Main extends JavaPlugin {
         AEAPI.registerEffect(this, "DECREASE_MANA", new CustomEffect() {
             @Override
             public boolean onEffectActivation(EffectActivationEvent e) {
-                if (!e.getEnchantmentType().equals(AEnchantmentType.EFFECT_STATIC))
+                if (!e.getEnchantmentType().equals(AEnchantmentType.EFFECT_STATIC) && !e.getEnchantmentType().equals(AEnchantmentType.HELD))
                     return false;
                 if (e.getArgs().length == 0)
                     return false;
@@ -212,9 +212,52 @@ public class Main extends JavaPlugin {
                 CursedUser user = getHandlerRegistry().getCursedUserHandler().getCursedUser(e.getMainEntity().getUniqueId());
 
                 if (e.isRemoval()) {
-                    user.setMana(user.getMana() + mana);
+                    user.setMaxMana(user.getMaxMana() + mana);
                 } else {
-                    user.setMana(user.getMana() - mana);
+                    user.setMaxMana(user.getMaxMana() - mana);
+                }
+                return true;
+            }
+        });
+
+        AEAPI.registerEffect(this, "INCREASE_MANAREGEN", new CustomEffect() {
+            @Override
+            public boolean onEffectActivation(EffectActivationEvent e) {
+                if (!e.getEnchantmentType().equals(AEnchantmentType.EFFECT_STATIC) && !e.getEnchantmentType().equals(AEnchantmentType.HELD))
+                    return false;
+                if (e.getArgs().length == 0)
+                    return false;
+                if (!(e.getMainEntity() instanceof Player))
+                    return false;
+
+                int mana = Integer.parseInt(e.getArgs()[0]);
+                CursedUser user = getHandlerRegistry().getCursedUserHandler().getCursedUser(e.getMainEntity().getUniqueId());
+
+                if (e.isRemoval()) {
+                    user.setManaregen(user.getManaregen() - mana);
+                } else {
+                    user.setManaregen(user.getManaregen() + mana);
+                }
+                return true;
+            }
+        });
+        AEAPI.registerEffect(this, "DECREASE_MANAREGEN", new CustomEffect() {
+            @Override
+            public boolean onEffectActivation(EffectActivationEvent e) {
+                if (!e.getEnchantmentType().equals(AEnchantmentType.EFFECT_STATIC) && !e.getEnchantmentType().equals(AEnchantmentType.HELD))
+                    return false;
+                if (e.getArgs().length == 0)
+                    return false;
+                if (!(e.getMainEntity() instanceof Player))
+                    return false;
+
+                int mana = Integer.parseInt(e.getArgs()[0]);
+                CursedUser user = getHandlerRegistry().getCursedUserHandler().getCursedUser(e.getMainEntity().getUniqueId());
+
+                if (e.isRemoval()) {
+                    user.setManaregen(user.getManaregen() + mana);
+                } else {
+                    user.setManaregen(user.getManaregen() - mana);
                 }
                 return true;
             }
@@ -224,7 +267,7 @@ public class Main extends JavaPlugin {
         AEAPI.registerEffect(this, "INCREASE_LUCK", new CustomEffect() {
             @Override
             public boolean onEffectActivation(EffectActivationEvent e) {
-                if (!e.getEnchantmentType().equals(AEnchantmentType.EFFECT_STATIC))
+                if (!e.getEnchantmentType().equals(AEnchantmentType.EFFECT_STATIC) && !e.getEnchantmentType().equals(AEnchantmentType.HELD))
                     return false;
                 if (e.getArgs().length == 0)
                     return false;
@@ -246,7 +289,7 @@ public class Main extends JavaPlugin {
         AEAPI.registerEffect(this, "DECREASE_LUCK", new CustomEffect() {
             @Override
             public boolean onEffectActivation(EffectActivationEvent e) {
-                if (!e.getEnchantmentType().equals(AEnchantmentType.EFFECT_STATIC))
+                if (!e.getEnchantmentType().equals(AEnchantmentType.EFFECT_STATIC) && !e.getEnchantmentType().equals(AEnchantmentType.HELD))
                     return false;
                 if (e.getArgs().length == 0)
                     return false;
@@ -270,7 +313,7 @@ public class Main extends JavaPlugin {
         AEAPI.registerEffect(this, "INCREASE_SPEED", new CustomEffect() {
             @Override
             public boolean onEffectActivation(EffectActivationEvent e) {
-                if (!e.getEnchantmentType().equals(AEnchantmentType.EFFECT_STATIC))
+                if (!e.getEnchantmentType().equals(AEnchantmentType.EFFECT_STATIC) && !e.getEnchantmentType().equals(AEnchantmentType.HELD))
                     return false;
                 if (e.getArgs().length == 0)
                     return false;
@@ -292,7 +335,7 @@ public class Main extends JavaPlugin {
         AEAPI.registerEffect(this, "DECREASE_SPEED", new CustomEffect() {
             @Override
             public boolean onEffectActivation(EffectActivationEvent e) {
-                if (!e.getEnchantmentType().equals(AEnchantmentType.EFFECT_STATIC))
+                if (!e.getEnchantmentType().equals(AEnchantmentType.EFFECT_STATIC) && !e.getEnchantmentType().equals(AEnchantmentType.HELD))
                     return false;
                 if (e.getArgs().length == 0)
                     return false;
@@ -316,7 +359,7 @@ public class Main extends JavaPlugin {
         AEAPI.registerEffect(this, "INCREASE_REGEN", new CustomEffect() {
             @Override
             public boolean onEffectActivation(EffectActivationEvent e) {
-                if (!e.getEnchantmentType().equals(AEnchantmentType.EFFECT_STATIC))
+                if (!e.getEnchantmentType().equals(AEnchantmentType.EFFECT_STATIC) && !e.getEnchantmentType().equals(AEnchantmentType.HELD))
                     return false;
                 if (e.getArgs().length == 0)
                     return false;
@@ -337,7 +380,7 @@ public class Main extends JavaPlugin {
         AEAPI.registerEffect(this, "DECREASE_REGEN", new CustomEffect() {
             @Override
             public boolean onEffectActivation(EffectActivationEvent e) {
-                if (!e.getEnchantmentType().equals(AEnchantmentType.EFFECT_STATIC))
+                if (!e.getEnchantmentType().equals(AEnchantmentType.EFFECT_STATIC) && !e.getEnchantmentType().equals(AEnchantmentType.HELD))
                     return false;
                 if (e.getArgs().length == 0)
                     return false;
@@ -360,20 +403,20 @@ public class Main extends JavaPlugin {
         AEAPI.registerEffect(this, "INCREASE_STRENGTH", new CustomEffect() {
             @Override
             public boolean onEffectActivation(EffectActivationEvent e) {
-                if (!e.getEnchantmentType().equals(AEnchantmentType.EFFECT_STATIC))
+                if (!e.getEnchantmentType().equals(AEnchantmentType.EFFECT_STATIC) && !e.getEnchantmentType().equals(AEnchantmentType.HELD))
                     return false;
                 if (e.getArgs().length == 0)
                     return false;
                 if (!(e.getMainEntity() instanceof Player))
                     return false;
 
-                double strength = Double.parseDouble(e.getArgs()[0]);
+                double strength = Integer.parseInt(e.getArgs()[0]) / 100.0;
                 CursedUser user = getHandlerRegistry().getCursedUserHandler().getCursedUser(e.getMainEntity().getUniqueId());
 
                 if (e.isRemoval()) {
-                    user.setStrength(user.getStrength() / strength);
+                    user.setStrength(user.getStrength() - strength);
                 } else {
-                    user.setStrength(user.getStrength() * strength);
+                    user.setStrength(user.getStrength() + strength);
                 }
                 return true;
             }
@@ -381,20 +424,20 @@ public class Main extends JavaPlugin {
         AEAPI.registerEffect(this, "DECREASE_STRENGTH", new CustomEffect() {
             @Override
             public boolean onEffectActivation(EffectActivationEvent e) {
-                if (!e.getEnchantmentType().equals(AEnchantmentType.EFFECT_STATIC))
+                if (!e.getEnchantmentType().equals(AEnchantmentType.EFFECT_STATIC) && !e.getEnchantmentType().equals(AEnchantmentType.HELD))
                     return false;
                 if (e.getArgs().length == 0)
                     return false;
                 if (!(e.getMainEntity() instanceof Player))
                     return false;
 
-                double strength = Double.parseDouble(e.getArgs()[0]);
+                double strength = Integer.parseInt(e.getArgs()[0]) / 100.0;
                 CursedUser user = getHandlerRegistry().getCursedUserHandler().getCursedUser(e.getMainEntity().getUniqueId());
 
                 if (e.isRemoval()) {
-                    user.setStrength(user.getStrength() / strength);
+                    user.setStrength(user.getStrength() + strength);
                 } else {
-                    user.setStrength(user.getStrength() * strength);
+                    user.setStrength(user.getStrength() - strength);
                 }
                 return true;
             }

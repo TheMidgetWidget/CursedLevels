@@ -1,7 +1,12 @@
 package me.lightlord323dev.cursedlevels.api.user;
 
+import me.lightlord323dev.cursedlevels.Main;
 import me.lightlord323dev.cursedlevels.api.skill.CursedSkill;
 import me.lightlord323dev.cursedlevels.api.skill.Skill;
+import me.lightlord323dev.cursedlevels.api.skill.data.skills.BlacksmithingData;
+import me.lightlord323dev.cursedlevels.api.skill.data.skills.DefenseData;
+import me.lightlord323dev.cursedlevels.api.skill.data.skills.FarmingData;
+import me.lightlord323dev.cursedlevels.api.skill.data.skills.RunecraftingData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +23,7 @@ public class CursedUser {
     private int health, maxHealth;
 
     // gained effects
-    private int defense, mana, regen;
+    private int defense, mana, maxMana, regen, manaregen;
     private double strength;
 
     public CursedUser(UUID uniqueId) {
@@ -34,10 +39,12 @@ public class CursedUser {
         this.maxHealth = 20;
 
         // gained effects
-        this.defense = 0;
-        this.mana = 0;
-        this.regen = 0;
+        this.defense = (int) ((DefenseData) Main.getInstance().getHandlerRegistry().getSkillDataHandler().getSkillData(Skill.DEFENSE)).getDefenseAmt(0);
+        this.maxMana = (int) ((RunecraftingData) Main.getInstance().getHandlerRegistry().getSkillDataHandler().getSkillData(Skill.RUNECRAFTING)).getWisdomAmt(0);
+        this.mana = maxMana;
+        this.regen = (int) ((FarmingData) Main.getInstance().getHandlerRegistry().getSkillDataHandler().getSkillData(Skill.FARMING)).getRegenBase();
         this.strength = 1;
+        this.manaregen = (int) ((BlacksmithingData) Main.getInstance().getHandlerRegistry().getSkillDataHandler().getSkillData(Skill.BLACKSMITHING)).getManaRegenAmt(0);
     }
 
     /**
@@ -47,8 +54,10 @@ public class CursedUser {
      */
     public void addLevel(Skill skill) {
         CursedSkill cs = this.skills.stream().filter(cursedSkill -> cursedSkill.getSkill() == skill).findAny().orElse(null);
-        if (cs != null)
+        if (cs != null) {
             cs.setLevel(cs.getLevel() + 1);
+            cs.setExp(0);
+        }
     }
 
     /**
@@ -136,7 +145,17 @@ public class CursedUser {
     }
 
     public void setMana(int mana) {
+        if (mana > maxMana)
+            mana = maxMana;
         this.mana = mana;
+    }
+
+    public int getMaxMana() {
+        return maxMana;
+    }
+
+    public void setMaxMana(int maxMana) {
+        this.maxMana = maxMana;
     }
 
     public int getRegen() {
@@ -154,4 +173,13 @@ public class CursedUser {
     public void setStrength(double strength) {
         this.strength = strength;
     }
+
+    public int getManaregen() {
+        return manaregen;
+    }
+
+    public void setManaregen(int manaregen) {
+        this.manaregen = manaregen;
+    }
+
 }

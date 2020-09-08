@@ -48,7 +48,7 @@ public class MiningHandler extends SkillHandler {
                 return;
         }
 
-        int exp = skillData.getBlockExp(e.getBlock().getType());
+        int exp = skillData.getBlockExp(e.getBlock());
 
         if (exp == -1)
             return;
@@ -86,27 +86,22 @@ public class MiningHandler extends SkillHandler {
         cursedUser.setSkillExp(skillData.getSkill(), cursedUser.getSkillExp(skillData.getSkill()) + exp);
         sendExpNotification(e.getWhoBroke(), cursedUser, exp, skillData);
 
+        int prevLevel = cursedUser.getSkillLevel(skillData.getSkill());
+
         // LEVELUP CHECK
         checkLevelUp(e.getWhoBroke(), cursedUser, cursedUser.getSkillExp(skillData.getSkill()), skillData);
+        int level = cursedUser.getSkillLevel(skillData.getSkill());
+
+        if (level > prevLevel) {
+            cursedUser.setStrength(cursedUser.getStrength() + skillData.getDmgMultiplier());
+        }
 
         // MINING BONUS
-        int level = cursedUser.getSkillLevel(skillData.getSkill());
         if (level > 0 && e.getBrokenBlock().getType() == Material.GOLD_ORE || e.getBrokenBlock().getType() == Material.IRON_ORE) {
             double chance = ThreadLocalRandom.current().nextInt(0, 401) / 400.0;
             if (chance <= skillData.getDoubleOreChance(level)) {
-                e.getBrokenBlock().getDrops().forEach(itemStack -> {
-                    e.getBrokenBlock().getWorld().dropItemNaturally(e.getBrokenBlock().getLocation(), itemStack);
-                });
+                e.getBrokenBlock().getDrops().forEach(itemStack -> e.getBrokenBlock().getWorld().dropItemNaturally(e.getBrokenBlock().getLocation(), itemStack));
             }
-        }
-    }
-
-    // DAMAGE BONUS
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void onDamage(EntityDamageByEntityEvent e) {
-        if (e.getDamager() instanceof Player) {
-            CursedUser cursedUser = Main.getInstance().getHandlerRegistry().getCursedUserHandler().getCursedUser(e.getDamager().getUniqueId());
-            e.setDamage(skillData.getAppliedDamage(e.getDamage(), cursedUser.getSkillLevel(skillData.getSkill())));
         }
     }
 

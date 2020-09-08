@@ -21,6 +21,10 @@ public class RunecraftingData extends SkillData {
     }
 
     public double getWisdomAmt(int level) {
-        return getPositiveGradientAmt(wisdomBase, wisdomMultiplier, level);
+        return wisdomBase + wisdomMultiplier * level;
+    }
+
+    public double getWisdomBase() {
+        return wisdomBase;
     }
 }

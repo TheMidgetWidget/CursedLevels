@@ -1,7 +1,7 @@
 name: CursedLevels
 main: me.lightlord323dev.cursedlevels.Main
 version: 1.0
-depend: [AdvancedEnchantments, OreRegenerator, WorldGuard, PlaceholderAPI]
+depend: [AdvancedEnchantments, OreRegenerator, WorldGuard, PlaceholderAPI, EmberCore]
 commands:
   skills:
   levels:

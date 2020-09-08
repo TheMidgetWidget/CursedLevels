@@ -34,12 +34,15 @@ public class CombatHandler extends SkillHandler {
             int exp = skillData.getEntityExp(e.getEntity());
             cursedUser.setSkillExp(skillData.getSkill(), cursedUser.getSkillExp(skillData.getSkill()) + exp);
 
+            int prevLevel = cursedUser.getSkillLevel(skillData.getSkill());
             // LEVELUP CHECK
             checkLevelUp(e.getEntity().getKiller(), cursedUser, cursedUser.getSkillExp(skillData.getSkill()), skillData);
             sendExpNotification(e.getEntity().getKiller(), cursedUser, exp, skillData);
-
             // UPDATE HEALTH
-            cursedUser.setMaxHealth(cursedUser.getMaxHealth() + skillData.getAddedHealth(cursedUser.getSkillLevel(skillData.getSkill())));
+            if (prevLevel < cursedUser.getSkillLevel(skillData.getSkill())) {
+                int prevHealth = skillData.getAddedHealth(prevLevel);
+                cursedUser.setMaxHealth(cursedUser.getMaxHealth() - prevHealth + skillData.getAddedHealth(cursedUser.getSkillLevel(skillData.getSkill())));
+            }
         }
     }
 

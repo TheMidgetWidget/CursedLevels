@@ -12,12 +12,14 @@ import me.lightlord323dev.cursedlevels.util.ItemBuilder;
 import me.lightlord323dev.cursedlevels.util.NBTApi;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.SkullType;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,8 +89,31 @@ public class SkillMainMenuHandler implements Handler, Listener {
             index++;
             counter++;
         }
+
+        CursedUser cursedUser = Main.getInstance().getHandlerRegistry().getCursedUserHandler().getCursedUser(player.getUniqueId());
+
+        // player head
+        ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short) SkullType.PLAYER.ordinal());
+        SkullMeta meta = (SkullMeta) skull.getItemMeta();
+        meta.setOwner(player.getName());
+        skull.setItemMeta(meta);
+        String lore = Main.getInstance().getHandlerRegistry().getMessageUtil().getMessage("main-menu-gui.player-head-lore")
+                .replace("%health%", String.valueOf(cursedUser.getHealth()))
+                .replace("%maxHealth%", String.valueOf(cursedUser.getMaxHealth()))
+                .replace("%mana%", String.valueOf(cursedUser.getMana()))
+                .replace("%defense%", String.valueOf(cursedUser.getDefense()))
+                .replace("%regen%", String.valueOf(cursedUser.getRegen()))
+                .replace("%maxMana%", String.valueOf(cursedUser.getMaxMana()))
+                .replace("%manaRegen%", String.valueOf(cursedUser.getManaregen()))
+                .replace("%luck%", String.valueOf(Main.getInstance().getEmberPlugin().getItemManager().getLuckLevelOf(player)))
+                .replace("%speed%", String.valueOf(player.getWalkSpeed()))
+                .replace("%strength%", String.valueOf((int) (cursedUser.getStrength() * 100)));
+        skull = new ItemBuilder(skull).setDisplayName(Main.getInstance().getHandlerRegistry().getMessageUtil().getMessage("main-menu-gui.player-head-name")).setLore(lore.split("\\n")).build();
+
+        guiItems.add(new GUIItem(skull, 20));
+
         CursedGUI cursedGUI = new CursedGUI(5,
-                ChatColor.translateAlternateColorCodes('&', Main.getInstance().getHandlerRegistry().getMessageUtil().getMessage("main-menu-gui.title")),
+                Main.getInstance().getHandlerRegistry().getMessageUtil().getMessage("main-menu-gui.title"),
                 true,
                 guiItems);
         player.openInventory(cursedGUI.getInventory());
