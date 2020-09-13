@@ -1,0 +1,29 @@
+enchantments:
+  health:
+    display-name: "&cHealth"
+    add-lore: "&6+%level% %displayName%"
+    subtract-lore: "&6-%level% %displayName%"
+  mana:
+    display-name: "&1Mana"
+    add-lore: "&6+%level% %displayName%"
+    subtract-lore: "&6-%level% %displayName%"
+  strength:
+    display-name: "&4Strength"
+    add-lore: "&6+%level% %displayName%"
+    subtract-lore: "&6-%level% %displayName%"
+  luck:
+    display-name: "&eLuck"
+    add-lore: "&6+%level% %displayName%"
+    subtract-lore: "&6-%level% %displayName%"
+  defense:
+    display-name: "&5Defense"
+    add-lore: "&6+%level% %displayName%"
+    subtract-lore: "&6-%level% %displayName%"
+  regen:
+    display-name: "&dRegeneration"
+    add-lore: "&6+%level% %displayName%"
+    subtract-lore: "&6-%level% %displayName%"
+  mana_regen:
+    display-name: "&bMana Regeneration"
+    add-lore: "&6+%level% %displayName%"
+    subtract-lore: "&6-%level% %displayName%"

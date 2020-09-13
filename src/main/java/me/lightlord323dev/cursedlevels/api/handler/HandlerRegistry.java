@@ -2,6 +2,8 @@ package me.lightlord323dev.cursedlevels.api.handler;
 
 import me.lightlord323dev.cursedlevels.Main;
 import me.lightlord323dev.cursedlevels.api.skill.data.handler.SkillDataHandler;
+import me.lightlord323dev.cursedlevels.enchantment.handler.EnchantmentGUIHandler;
+import me.lightlord323dev.cursedlevels.enchantment.handler.EnchantmentHandler;
 import me.lightlord323dev.cursedlevels.handler.*;
 import me.lightlord323dev.cursedlevels.handler.skill.*;
 import me.lightlord323dev.cursedlevels.util.MessageUtil;
@@ -24,7 +26,8 @@ public class HandlerRegistry {
     private MessageUtil messageUtil;
     private SkillDataHandler skillDataHandler;
     private CursedUserHandler cursedUserHandler;
-    private SkillMainMenuHandler skillMainMenuHandler;
+    private EnchantmentHandler enchantmentHandler;
+    private EnchantmentGUIHandler enchantmentGUIHandler;
 
     public void loadHanders() {
         handlers = new ArrayList<>();
@@ -35,9 +38,11 @@ public class HandlerRegistry {
                 messageUtil = new MessageUtil(),
                 skillDataHandler = new SkillDataHandler(),
                 cursedUserHandler = new CursedUserHandler(),
-                skillMainMenuHandler = new SkillMainMenuHandler(),
+                new SkillMainMenuHandler(),
                 new CursedUserHealthHandler(),
                 new CustomEffectStrengthHandler(),
+                enchantmentHandler = new EnchantmentHandler(),
+                enchantmentGUIHandler = new EnchantmentGUIHandler(),
 
                 // SKILL HANDLERS
                 new MiningHandler(),
@@ -79,7 +84,11 @@ public class HandlerRegistry {
         return cursedUserHandler;
     }
 
-    public SkillMainMenuHandler getSkillMainMenuHandler() {
-        return skillMainMenuHandler;
+    public EnchantmentHandler getEnchantmentHandler() {
+        return enchantmentHandler;
+    }
+
+    public EnchantmentGUIHandler getEnchantmentGUIHandler() {
+        return enchantmentGUIHandler;
     }
 }

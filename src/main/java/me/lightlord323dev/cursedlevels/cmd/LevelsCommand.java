@@ -1,19 +1,16 @@
 package me.lightlord323dev.cursedlevels.cmd;
 
 import me.lightlord323dev.cursedlevels.Main;
+import me.lightlord323dev.cursedlevels.api.enchantment.CursedEnchantmentType;
 import me.lightlord323dev.cursedlevels.api.user.CursedUser;
 import me.lightlord323dev.cursedlevels.util.MessageUtil;
-import n3kas.ae.api.AEAPI;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-
-import java.util.List;
 
 /**
  * Created by Luda on 9/4/2020.
@@ -27,6 +24,53 @@ public class LevelsCommand implements CommandExecutor {
 
         if (!sender.hasPermission("cursedlevels.admin"))
             return true;
+
+        if (args.length == 1) {
+            if (args[0].equalsIgnoreCase("enchant")) {
+                if (!(sender instanceof Player))
+                    return true;
+
+                Player player = (Player) sender;
+                Main.getInstance().getHandlerRegistry().getEnchantmentGUIHandler().openEnchantGUI(player);
+                return true;
+            }
+        }
+
+        if (args.length == 3) {
+            if (args[0].equalsIgnoreCase("enchant")) {
+
+                if (!(sender instanceof Player))
+                    return true;
+
+                Player player = (Player) sender;
+
+                String type = args[1];
+                CursedEnchantmentType cursedEnchantmentType = null;
+                for (CursedEnchantmentType enchantmentType : CursedEnchantmentType.values()) {
+                    if (enchantmentType.toString().equalsIgnoreCase(type))
+                        cursedEnchantmentType = enchantmentType;
+                }
+                if (cursedEnchantmentType == null) {
+                    MessageUtil.error(sender, "Invalid enchantment type.");
+                    return true;
+                }
+                if (!isInt(args[2])) {
+                    MessageUtil.error(sender, "Level must be a valid integer.");
+                    return true;
+                }
+                if (player.getItemInHand().getType() == Material.AIR) {
+                    MessageUtil.error(sender, "You must hold an item in hand.");
+                    return true;
+                }
+                int level = Integer.valueOf(args[2]);
+                player.setItemInHand(Main.getInstance().getHandlerRegistry().getEnchantmentHandler().applyEnchantment(player, player.getItemInHand(), cursedEnchantmentType, level));
+                boolean held = !isArmor(player.getItemInHand());
+                if (held)
+                    Main.getInstance().getHandlerRegistry().getEnchantmentHandler().getEnchantment(cursedEnchantmentType).onEquip(player, level, held);
+                MessageUtil.success(sender, "Enchantment added.");
+                return true;
+            }
+        }
 
         if (args.length == 4) {
 
@@ -119,6 +163,14 @@ public class LevelsCommand implements CommandExecutor {
             return false;
         }
         return true;
+    }
+
+    private boolean isArmor(ItemStack itemStack) {
+        String typeNameString = itemStack.getType().name();
+        return typeNameString.endsWith("_HELMET")
+                || typeNameString.endsWith("_CHESTPLATE")
+                || typeNameString.endsWith("_LEGGINGS")
+                || typeNameString.endsWith("_BOOTS");
     }
 
 }

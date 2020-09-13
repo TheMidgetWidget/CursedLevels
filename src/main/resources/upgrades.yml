@@ -1,0 +1,9 @@
+Epic:
+  display-name: "&3Epic"
+  format: "&7(%displayName% &6%level%&7)"
+  chance: 20
+  effects:
+    - health;10
+    - strength;20
+    - mana_regen;30
+  price: 1000

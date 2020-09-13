@@ -4,3 +4,11 @@ auto-save-timer: 5
 combat-tag-timer: 5
 level-up-sound: "LEVEL_UP"
 exp-gain-sound: "NOTE_PLING"
+enchant-gui-button:
+  material: "ENCHANTMENT_TABLE"
+  display-name: "&6Enchant"
+  lore: "&7Click to enchant item"
+upgrades:
+  # set either to none if no sounds are wanted
+  successful-sound: "LEVEL_UP"
+  error-sound: "VILLAGER_NO"

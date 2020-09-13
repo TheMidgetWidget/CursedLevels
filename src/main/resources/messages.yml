@@ -14,3 +14,9 @@ action-bar:
   main-hud: "&aHEALTH: &6%health%&7/&6%maxHealth%"
   level-up: "&aYou have levelled up %skill% to %level%"
   gain-exp: "&a+%exp% EXP %skill% %currentExp%/%nextExp%"
+enchant-gui:
+  title: "&6Enchant"
+upgrades:
+  successful-upgrade: "&aYou have rolled %upgrade%!"
+  error-no-roll: "&cUnlucky, you did not roll an upgrade"
+  error-no-money: "&cYou rolled %upgrade% but don't have enough money!"

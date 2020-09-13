@@ -12,8 +12,10 @@ import n3kas.ae.api.AEAPI;
 import n3kas.ae.api.AEnchantmentType;
 import n3kas.ae.api.CustomEffect;
 import n3kas.ae.api.EffectActivationEvent;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.concurrent.Executors;
@@ -33,8 +35,8 @@ public class Main extends JavaPlugin {
     // executor service
     private ScheduledExecutorService executorService;
 
-    // settings file
-    private AbstractFile settingsFile;
+    // files
+    private AbstractFile settingsFile, enchantmentsFile;
 
     // worldguard
     private WorldGuardPlugin worldGuardPlugin;
@@ -42,11 +44,21 @@ public class Main extends JavaPlugin {
     // embercore
     private EmberPlugin emberPlugin;
 
+    // vault
+    private static Economy econ = null;
+
     @Override
     public void onEnable() {
         instance = this;
 
         this.executorService = Executors.newScheduledThreadPool(4);
+
+        // vault
+        if (!setupEconomy() ) {
+            getLogger().severe(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
 
         // world guard
         if (getServer().getPluginManager().getPlugin("WorldGuard") != null)
@@ -82,8 +94,23 @@ public class Main extends JavaPlugin {
         saveResource("messages.yml", false);
         saveResource("settings.yml", false);
         saveResource("skills_settings.yml", false);
+        saveResource("enchantments.yml", false);
+        saveResource("upgrades.yml", false);
 
         this.settingsFile = new AbstractFile(this, "settings.yml", true);
+        this.enchantmentsFile = new AbstractFile(this, "enchantments.yml", true);
+    }
+
+    private boolean setupEconomy() {
+        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            return false;
+        }
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+        if (rsp == null) {
+            return false;
+        }
+        econ = rsp.getProvider();
+        return econ != null;
     }
 
     private void advancedEnchantmentsEffects() {
@@ -460,11 +487,19 @@ public class Main extends JavaPlugin {
         return settingsFile;
     }
 
+    public AbstractFile getEnchantmentsFile() {
+        return enchantmentsFile;
+    }
+
     public WorldGuardPlugin getWorldGuardPlugin() {
         return worldGuardPlugin;
     }
 
     public EmberPlugin getEmberPlugin() {
         return emberPlugin;
+    }
+
+    public static Economy getEcon() {
+        return econ;
     }
 }
